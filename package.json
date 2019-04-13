@@ -1,0 +1,17 @@
+{
+  "name": "slack-bot",
+  "version": "1.0.0",
+  "description": "Slackbot that saves code and images",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Billy Bunn",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}
