@@ -209,12 +209,6 @@ slackEvents.on('file_created', (fileEvent, body) => {
     .then(file => {
       console.log('210 mode', file.file.mode);
       if (file.file.mode === 'snippet') {
-        console.log('ITS A SNIPPET');
-        // console.log('the whole file obj', file);
-        console.log('channel to respond to:', file.file.channels[0]);
-
-        // CJ0MKER54 - billy & chris
-        // CHW996DHC - everyone
 
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
@@ -253,7 +247,7 @@ slackEvents.on('file_created', (fileEvent, body) => {
               ]
             }
           ]
-        })
+        });
 
 
 
