@@ -179,13 +179,14 @@ slackEvents.on('message', (message, body) => {
         let text_message = `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`;
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
-        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + process.env.SLACK_AUTH_TOKEN 
-        + '&user=' + message.user + '&channel='+ message.channel +'&attachments=' + attachment_tmp + '&text=' + text_message;
-        
+        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + token
+          + '&user=' + message.user + '&channel=' + message.channel + '&attachments=' + attachment_tmp + '&text=' + text_message;
+
+        console.log('line 185');
         superagent.post(postEphemeralURL).send()
-        .set('Content-Type', 'application/json;charset=utf-8')
-        .then();
-        })
+          .set('Content-Type', 'application/json;charset=utf-8')
+          .then();
+      })
       .catch(err => console.log(err));
   }
 
@@ -263,11 +264,11 @@ slackEvents.on('file_created', (fileEvent, body) => {
         let channel = file.file.channels[0];
         let text = `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`;
         let attachment_tmp = JSON.stringify([block]);
-        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + process.env.SLACK_AUTH_TOKEN 
-        + '&user=' + user + '&channel='+ channel +'&attachments=' + attachment_tmp + '&text=' + text;
+        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + token
+          + '&user=' + user + '&channel=' + channel + '&attachments=' + attachment_tmp + '&text=' + text;
         superagent.post(postEphemeralURL).send()
-        .set('Content-Type', 'application/json;charset=utf-8')
-        .then();
+          .set('Content-Type', 'application/json;charset=utf-8')
+          .then();
       }
     })
     .catch(err => console.error(err));
@@ -405,7 +406,7 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
     .catch(err => console.error('ERROR on line 336', err));
 });
 
-slackInteractions.action({actionId: 'dont_save'}, (payload, respond) => {
+slackInteractions.action({ actionId: 'dont_save' }, (payload, respond) => {
   respond({
     text: `Ok, I won't save it. If you change your mind, send your code (as a snippet or inside 3 backticks) to this channel again.`,
     replace_original: true,
