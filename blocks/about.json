@@ -127,5 +127,20 @@
           "image_url": "https://i.imgur.com/cqMzpmZ.png",
           "alt_text": "hannah bot"
       }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "Help",
+          "emoji": true
+        },
+        "action_id": "help",
+        "value": "click_me_123"
+      }
+    ]
   }
 ]

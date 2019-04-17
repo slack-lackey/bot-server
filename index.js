@@ -33,6 +33,7 @@ const blockOne = require('./blocks/block-1.json');
 const blockTwo = require('./blocks/block-2.json');
 const blockSuccess = require('./blocks/success.json');
 const aboutBlock = require('./blocks/about.json');
+const helpBlock = require('./blocks/help.json');
 
 
 /***************************************************
@@ -239,6 +240,25 @@ slackEvents.on('message', (message, body) => {
     });
   }
 
+  // ***** If message contains "<bot_id> help", send back a the "help" block contents
+  if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
+    console.log('asked for help');
+    console.log('MeSSAGE:', message);
+
+    const slack = getClientByTeamId(body.team_id);
+    let token = botAuthorizationStorage.getItem(body.team_id);
+
+    let block = helpBlock;
+
+    slack.chat.postEphemeral({
+      token: token,
+      channel: message.channel,
+      text: '',
+      user: message.user,
+      blocks: block,
+    });
+  }
+
 });
 
 slackEvents.on('file_created', (fileEvent, body) => {
@@ -411,6 +431,22 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
 slackInteractions.action({ actionId: 'dont_save' }, (payload, respond) => {
   respond({
     text: `Ok, I won't save it. If you change your mind, send your code (as a snippet or inside 3 backticks) to this channel again.`,
+    replace_original: true,
+  });
+});
+
+slackInteractions.action({ actionId: 'family' }, (payload, respond) => {
+  let block = aboutBlock;
+  respond({
+    blocks: block,
+    replace_original: true,
+  });
+});
+
+slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
+  let block = helpBlock;
+  respond({
+    blocks: block,
     replace_original: true,
   });
 });

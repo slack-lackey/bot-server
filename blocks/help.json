@@ -1,0 +1,272 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Hi USERNAME! My name is Slack Lackey and I am ready and waiting to share your favorite code snippets with the world,* (_or at least the portion of the world with a GitHub_) *by saving them as Gists in a shared GitHub account.*"
+    },
+    "accessory": {
+      "type": "image",
+      "image_url": "https://i.imgur.com/jkFJzPt.png",
+      "alt_text": "slack lackey"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*HERE'S WHAT I CAN DO...*"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey help* - I will show this message :sunglasses:."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you share a portion of code wrapped in ``` I will ask you if you want to save it as a Gist."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you create a code snippet by clicking the :heavy_plus_sign: to the left of the message input box, I will ask if you want to save it as a Gist.\n\n *Reminder: * _Don't forget to give your code snippet a Title and a Type. If you forget, I can still do my work but you may have a harder time querying your snippet later._\n\n If you say you want to save your snippet as a Gist, I will ask you a few more questions"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "*Title*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "Descriptive file name"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "*Author*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "Who wrote the snippet?"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "*Data Structures*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "A list of common data structures"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "*Code Tools*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "Tips and tricks for common code tools"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "*Other Random Topics*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "When your snippet defies categorization"
+      }
+    ]
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Note:* You can choose 0 to 1 option per drop down menu.\n\n"
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Need additonal keywords?* Ask my creators to add them for you!"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "Click *'Save as a Gist!'*\n\nI will do all of the work for you and send you back a message with your new Gist url and a button you can use to go visit it on GitHub."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you feel like sharing, you can also share your new Gist with your channel!\n\nAll you have to do is click *'Share to Channel'*"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey get all gists*, I will go get a list of all of the Gists in the GitHub linked to this channel."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey get [keyword] gists*, I will bring back a list of Gists with that keyword."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Notes:* \nAll keywords must be lowercase. \n_*Example:* mongo || linked list || css tricks_\n\nYou can search for partial keywords.\n_*Example:* css || hash || list_"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey get my gists*, I will bring back a list of Gists that you have previously created." 
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey get gists from [mm/dd/yy]*, I will bring back a list of Gists that were created on that date."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "If you call me with *@Slack Lackey get gists from [mm/dd/yy] and [mm/dd/yy]*, I will bring back a list of Gists that were created inclusive of and between those dates."
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*It has been nice to meet you! Learn more about my family by clicking the button below...*"
+    }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "My Creators",
+          "emoji": true
+        },
+        "action_id": "family",
+        "value": "click_me_123"
+      }
+    ]
+  }
+]
