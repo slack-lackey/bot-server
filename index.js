@@ -188,18 +188,37 @@ slackEvents.on('message', (message, body) => {
       .catch(err => console.log(err));
   }
 
-  // ***** If message contains "get gists", send back a link from the GitHub API
-  if (!message.subtype && message.text.indexOf('get gists') >= 0) {
+  // ***** If message contains "get my gists", send back a link from the GitHub API
+  if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
     const slack = getClientByTeamId(body.team_id);
 
-    return superagent.get('https://api.github.com/users/SlackLackey/gists')
+
+
+
+    db.get()
       .then(res => {
-        const url = res.body[0].url;
+        let result = '';
+        res.forEach(item => {
+          console.log(item);
+          console.log('message', message);
+          if (item.user === message.user) {
+            result += item.url + '\n';
+          }
+        });
+        return result;
+      })
+      .then(result => {
         slack.chat.postMessage({
           channel: message.channel,
-          text: 'Your gists are here:\n' + url,
+          text: 'Your gists are here: ' + result,
         });
       })
+
+
+
+
+
+
       .catch(err => console.log(err));
   }
 
