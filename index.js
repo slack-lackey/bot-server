@@ -175,17 +175,17 @@ slackEvents.on('message', (message, body) => {
         block.blocks[0].elements[0].value = JSON.stringify(message);
         block.blocks[0].elements[0].action_id = 'save_gist';
 
+        let attachment_tmp = JSON.stringify([block]);
+        let text_message = `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`;
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
-        slack.chat.postMessage({
-          channel: message.channel,
-          text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
-          attachments: [
-            block,
-          ],
-        });
-      })
-
+        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + process.env.SLACK_AUTH_TOKEN 
+        + '&user=' + message.user + '&channel='+ message.channel +'&attachments=' + attachment_tmp + '&text=' + text_message;
+        
+        superagent.post(postEphemeralURL).send()
+        .set('Content-Type', 'application/json;charset=utf-8')
+        .then();
+        })
       .catch(err => console.log(err));
   }
 
@@ -259,13 +259,15 @@ slackEvents.on('file_created', (fileEvent, body) => {
 
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
-        slack.chat.postMessage({
-          channel: file.file.channels[0],
-          text: `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
-          attachments: [
-            block,
-          ],
-        });
+        let user = file.file.user;
+        let channel = file.file.channels[0];
+        let text = `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`;
+        // console.log(x);
+        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + process.env.SLACK_AUTH_TOKEN 
+        + '&user=' + user + '&channel='+ channel +'&attachments=' + attachment_tmp + '&text=' + text;
+        superagent.post(postEphemeralURL).send()
+        .set('Content-Type', 'application/json;charset=utf-8')
+        .then();
       }
     })
     .catch(err => console.error(err));
