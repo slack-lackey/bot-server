@@ -1,0 +1,258 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "I am so excited that you want save your code snippet as a Gist!!\n\n\n*Reminder:* _If you don't like what you see below you can go edit your snippet and I will ask again after you save :grin:_\n\n\n*This is what I will save for you:*"
+    },
+    "accessory": {
+      "type": "image",
+      "image_url": "https://i.imgur.com/jkFJzPt.png",
+      "alt_text": "slack lackey"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Title:*\n\n FAKE-TITLE-HERE"
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Author:*"
+    }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "users_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Select a User",
+          "emoji": true
+        }
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Subject Keywords:*"
+    }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Data Structures",
+          "emoji": true
+        },
+        "options": [
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Array Methods",
+              "emoji": true
+            },
+            "value": "value-0"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Linked Lists",
+              "emoji": true
+            },
+            "value": "value-1"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Stacks",
+              "emoji": true
+            },
+            "value": "value-2"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Queues",
+              "emoji": true
+            },
+            "value": "value-3"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Binary Trees",
+              "emoji": true
+            },
+            "value": "value-4"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Hash Tables",
+              "emoji": true
+            },
+            "value": "value-5"
+          }
+        ]
+      },
+      {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Code Tools",
+          "emoji": true
+        },
+        "options": [
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Mongo",
+              "emoji": true
+            },
+            "value": "value-0"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "React",
+              "emoji": true
+            },
+            "value": "value-1"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "PSQL",
+              "emoji": true
+            },
+            "value": "value-2"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "AWS",
+              "emoji": true
+            },
+            "value": "value-3"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Azure",
+              "emoji": true
+            },
+            "value": "value-4"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Heroku",
+              "emoji": true
+            },
+            "value": "value-5"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "JSDOCS",
+              "emoji": true
+            },
+            "value": "value-6"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Swagger",
+              "emoji": true
+            },
+            "value": "value-7"
+          }
+        ]
+      },
+      {
+        "type": "static_select",
+        "placeholder": {
+          "type": "plain_text",
+          "text": "Other Random Topics",
+          "emoji": true
+        },
+        "options": [
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Useful Terminal Commands",
+              "emoji": true
+            },
+            "value": "value-0"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "ASCII Art",
+              "emoji": true
+            },
+            "value": "value-1"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "CSS Tricks",
+              "emoji": true
+            },
+            "value": "value-2"
+          },
+          {
+            "text": {
+              "type": "plain_text",
+              "text": "Too Random to Categorize",
+              "emoji": true
+            },
+            "value": "value-2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Link to Snippet:*"
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "<https://slacklackey.slack.com/files/UHVUXRV2B/FHY6E36NL/title_to_snippet.pl/edit>"
+    }
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "Save as a Gist!",
+          "emoji": true
+        },
+        "value": "click_me_123"
+      }
+    ]
+  }
+]

@@ -22,6 +22,7 @@ const LocalStorage = require('node-localstorage').LocalStorage;
 const SlackStrategy = require('@aoberoi/passport-slack').default.Strategy;
 
 const blockOne = require('./blocks/block-1.json');
+const blockTwo = require('./blocks/block-2.json');
 const blockAbout = require('./blocks/about-block.json');
 
 
@@ -37,7 +38,7 @@ const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET)
 
 // Initialize event adapter using signing secret from environment variables
 const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
-  includeBody: true
+  includeBody: true,
 });
 
 // Initialize a Local Storage object to store authorization info
@@ -215,6 +216,22 @@ slackEvents.on('message', (message, body) => {
   }
 
 
+  if (!message.subtype && message.text.indexOf('test') >= 0) {
+    const slack = getClientByTeamId(body.team_id);
+
+    let block = blockOne;
+    block.blocks[0].elements[0].value = JSON.stringify(message);
+    block.blocks[0].elements[0].action_id = 'test';
+
+    slack.chat.postMessage({
+      channel: message.channel,
+      text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+      attachments: [
+        block,
+      ],
+    });
+  }
+
 
 
 
@@ -343,6 +360,22 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
         });
     })
     .catch(err => console.error('ERROR on line 336', err));
+});
+
+slackInteractions.action({ actionId: 'test' }, (payload, respond) => {
+  console.log('heard action_id test');
+
+  let block = blockTwo;
+
+  respond({
+    text: 'hello',
+    attachments: [
+      {
+        blocks: block,
+      },
+    ],
+    replace_original: true,
+  });
 });
 
 
