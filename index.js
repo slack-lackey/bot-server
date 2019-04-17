@@ -236,27 +236,6 @@ slackEvents.on('message', (message, body) => {
     });
   }
 
-  /*
-    if (!message.subtype && message.text.indexOf('test') >= 0) {
-      const slack = getClientByTeamId(body.team_id);
-  
-      let block = blockOne;
-      block.blocks[0].elements[0].value = JSON.stringify(message);
-      block.blocks[0].elements[0].action_id = 'test';
-  
-      slack.chat.postMessage({
-        channel: message.channel,
-        text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
-        attachments: [
-          block,
-        ],
-      });
-    }
-    */
-
-
-
-
 });
 
 slackEvents.on('file_created', (fileEvent, body) => {
@@ -424,45 +403,12 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
     .catch(err => console.error('ERROR on line 336', err));
 });
 
-
-/*
-slackInteractions.action({ actionId: 'test' }, (payload, respond) => {
-  console.log('heard action_id test');
-
-  let block = blockTwo;
-  // console.log('ACTION ID:', block[9].elements[0].action_id);
-  // block[9].elements[0].action_id = 'test_action';
-
+slackInteractions.action({actionId: 'dont_save'}, (payload, respond) => {
   respond({
-    blocks: block,
+    text: `Ok, I won't save it. If you change your mind, send your code (as a snippet or inside 3 backticks) to this channel again.`,
     replace_original: true,
   });
 });
-
-
-
-slackInteractions.action({ actionId: 'test_action' }, (payload, respond) => {
-  console.log('heard test_action');
-  // console.log('PAYLOAD:', payload);
-  console.log('************************************************');
-  console.log('MESSAGE BLOCKS:', payload.message.blocks);
-  console.log('************************************************');
-
-  console.log('AUTHOR:', payload.message.blocks[3]);
-  console.log('AUTHOR:', payload.message.blocks[4]);
-
-
-
-
-  // let block = blockTwo;
-
-  respond({
-    text: 'This is the part where I would save a Gist for you and give you a link.',
-    replace_original: true,
-  });
-});
-
-*/
 
 
 // *** Handle Event API errors ***
