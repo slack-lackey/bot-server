@@ -215,7 +215,7 @@ slackEvents.on('message', (message, body) => {
     });
   }
 
-
+/*
   if (!message.subtype && message.text.indexOf('test') >= 0) {
     const slack = getClientByTeamId(body.team_id);
 
@@ -231,6 +231,7 @@ slackEvents.on('message', (message, body) => {
       ],
     });
   }
+  */
 
 
 
@@ -363,13 +364,13 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
 });
 
 
-
+/*
 slackInteractions.action({ actionId: 'test' }, (payload, respond) => {
   console.log('heard action_id test');
 
   let block = blockTwo;
-  console.log('ACTION ID:', block[9].elements[0].action_id);
-  block[9].elements[0].action_id = 'test_action';
+  // console.log('ACTION ID:', block[9].elements[0].action_id);
+  // block[9].elements[0].action_id = 'test_action';
 
   respond({
     blocks: block,
@@ -377,10 +378,20 @@ slackInteractions.action({ actionId: 'test' }, (payload, respond) => {
   });
 });
 
+
+
 slackInteractions.action({ actionId: 'test_action' }, (payload, respond) => {
   console.log('heard test_action');
-  console.log('PAYLOAD:', payload);
-  console.log('RESPONSE URL:', payload.response_url);
+  // console.log('PAYLOAD:', payload);
+  console.log('************************************************');
+  console.log('MESSAGE BLOCKS:', payload.message.blocks);
+  console.log('************************************************');
+
+  console.log('AUTHOR:', payload.message.blocks[3]);
+  console.log('AUTHOR:', payload.message.blocks[4]);
+
+
+
 
   // let block = blockTwo;
 
@@ -390,6 +401,7 @@ slackInteractions.action({ actionId: 'test_action' }, (payload, respond) => {
   });
 });
 
+*/
 
 
 // *** Handle Event API errors ***
