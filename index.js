@@ -17,6 +17,7 @@ const mongooseOptions = {
 };
 
 mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
+const db = require('./database/gist-model.js');
 
 // Slack APIs
 const { WebClient } = require('@slack/web-api');
@@ -56,17 +57,10 @@ const botAuthorizationStorage = new LocalStorage('./storage');
 // Route to populate mongo db
 app.get('/test', test);
 
-// Call function with:
-// echo '{"title":"test", "author": "Billy", "date":"4/17/19", "channel":"SDFHF39", "keywords":["array", "random", "javascript"], "url":"www.google.com", "user":"1234455"}' | http POST https://9a061648.ngrok.io/test
-
-
-
 function test(request, response) {
   app.use(express.json());
-  app.use(express.urlencoded({ extended: true }))
-  let db = require('./database/gist-model.js');
+  app.use(express.urlencoded({ extended: true }));
 
-  // console.log('*****request: ', request.body);
   let obj = {
     title: 'chris-merritt-1555531821767.js',
     author: 'Chris Merritt',
@@ -75,10 +69,9 @@ function test(request, response) {
     keywords: undefined,
     user: 'UHL424Y9F',
     url: 'https://gist.github.com/SlackLackey/2086215da0ad8a174476f409b2f7a341'
-  }
+  };
   db.post(obj);
 
-  // db.post(request.body);
   response.status(200).send('posted ok check compass');
 }
 
@@ -306,6 +299,20 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
   return superagent.post(`${process.env.BOT_API_SERVER}/createGist`)
     .send(gist)
     .then((res) => {
+
+      let db = require('./database/gist-model.js');
+      let obj = {
+        title: title,
+        author: message.username,
+        date: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
+        channel: message.channel,
+        keywords: message.keywords,
+        user: message.user,
+        url: res.text,
+      };
+      // console.log(obj);
+      db.post(obj);
+
       respond({
         text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
         replace_original: true,
@@ -357,7 +364,20 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
           return superagent.post(`${process.env.BOT_API_SERVER}/createGist`)
             .send(gist)
             .then((res) => {
-              console.log('line 200');
+
+              let obj = {
+                title: title,
+                author: file.username,
+                date: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
+                channel: payload.channel.id,
+                // keywords: message.keywords,
+                user: payload.user.id,
+                url: res.text,
+              };
+              console.log('******* OBJ TO SAVE TO DB:', obj);
+              db.post(obj);
+
+
               respond({
                 text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
                 replace_original: true,
