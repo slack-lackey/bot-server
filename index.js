@@ -23,7 +23,7 @@ const SlackStrategy = require('@aoberoi/passport-slack').default.Strategy;
 
 const blockOne = require('./blocks/block-1.json');
 const blockTwo = require('./blocks/block-2.json');
-const blockAbout = require('./blocks/about-block.json');
+const aboutBlock = require('./blocks/about.json');
 
 
 /***************************************************
@@ -207,7 +207,7 @@ slackEvents.on('message', (message, body) => {
   if (!message.subtype && message.text.indexOf('family') >= 0) {
     const slack = getClientByTeamId(body.team_id);
 
-    let block = blockAbout;
+    let block = aboutBlock;
 
     slack.chat.postMessage({
       channel: message.channel,
@@ -362,21 +362,34 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
     .catch(err => console.error('ERROR on line 336', err));
 });
 
+
+
 slackInteractions.action({ actionId: 'test' }, (payload, respond) => {
   console.log('heard action_id test');
 
   let block = blockTwo;
+  console.log('ACTION ID:', block[9].elements[0].action_id);
+  block[9].elements[0].action_id = 'test_action';
 
   respond({
-    text: 'hello',
-    attachments: [
-      {
-        blocks: block,
-      },
-    ],
+    blocks: block,
     replace_original: true,
   });
 });
+
+slackInteractions.action({ actionId: 'test_action' }, (payload, respond) => {
+  console.log('heard test_action');
+  console.log('PAYLOAD:', payload);
+  console.log('RESPONSE URL:', payload.response_url);
+
+  // let block = blockTwo;
+
+  respond({
+    text: 'This is the part where I would save a Gist for you and give you a link.',
+    replace_original: true,
+  });
+});
+
 
 
 // *** Handle Event API errors ***

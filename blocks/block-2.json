@@ -251,7 +251,8 @@
           "text": "Save as a Gist!",
           "emoji": true
         },
-        "value": "click_me_123"
+        "value": "click_me_123",
+        "action_id":"some_action"
       }
     ]
   }
