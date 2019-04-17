@@ -21,6 +21,10 @@ const passport = require('passport');
 const LocalStorage = require('node-localstorage').LocalStorage;
 const SlackStrategy = require('@aoberoi/passport-slack').default.Strategy;
 
+const blockOne = require('./blocks/block-1.json');
+const blockAbout = require('./blocks/about-block.json');
+
+
 /***************************************************
 ---------- APPLICATION SETUP ----------
 ***************************************************/
@@ -84,8 +88,36 @@ app.get('/', (req, res) => {
 });
 
 
+//test post please ignore
+app.post('/test', test);
+function test(request, response) {
+  console.log('*****request: ', request.body);
+  let db = require('./database/gist-model.js');
+  db.post(request.query);
+  response.status(200).send('posted ok check compass');
+}
+app.get('/getGists', getGists);
+function getGists(request, response) {
+  let db = require('./database/gist-model.js');
+  db.get()
+    .then(res => {
+      let result = [];
+      res.forEach(item => {
+        if (item.keywords.includes(request.query.check)) {
+          result.push(item.url);
+        }
+      });
+      return result;
+    })
+    .then(result => {
+      response.status(200).send(result);
+    });
+}
+
+
+
 app.get('/auth/slack', passport.authenticate('slack', {
-  scope: ['bot']
+  scope: ['bot'],
 }));
 
 // Corresponds to a "Redirect URL" in App Dashboard > Features > OAuth & Permissions
@@ -135,44 +167,20 @@ slackEvents.on('message', (message, body) => {
         // attach display name to the message object
         message.username = res.user.profile.display_name;
 
+        // use block template from JSON file, add value and action_id
+        let block = blockOne;
+        block.blocks[0].elements[0].value = JSON.stringify(message);
+        block.blocks[0].elements[0].action_id = 'save_gist';
+
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
         slack.chat.postMessage({
           channel: message.channel,
           text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
           attachments: [
-            {
-              "blocks": [
-                {
-                  "type": "actions",
-                  "elements": [
-                    {
-                      "type": "button",
-                      "text": {
-                        "type": "plain_text",
-                        "emoji": true,
-                        "text": "Yeah"
-                      },
-                      "value": JSON.stringify(message),
-                      "action_id": "save_gist",
-                      "style": "primary"
-                    },
-                    {
-                      "type": "button",
-                      "text": {
-                        "type": "plain_text",
-                        "emoji": true,
-                        "text": "Nah"
-                      },
-                      "value": "click_me_123",
-                      "style": "danger"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        })
+            block,
+          ],
+        });
       })
 
       .catch(err => console.log(err));
@@ -193,10 +201,27 @@ slackEvents.on('message', (message, body) => {
       .catch(err => console.log(err));
   }
 
+
+  // ***** If message contains "family", send back a the "about-block" contents
+  if (!message.subtype && message.text.indexOf('family') >= 0) {
+    const slack = getClientByTeamId(body.team_id);
+
+    let block = blockAbout;
+
+    slack.chat.postMessage({
+      channel: message.channel,
+      blocks: block,
+    });
+  }
+
+
+
+
+
 });
 
 slackEvents.on('file_created', (fileEvent, body) => {
-  console.log('file was created 196')
+  console.log('file was created 196');
   console.log('fileEvent', fileEvent);
 
   const slack = getClientByTeamId(body.team_id);
@@ -209,6 +234,10 @@ slackEvents.on('file_created', (fileEvent, body) => {
     .then(file => {
       console.log('210 mode', file.file.mode);
       if (file.file.mode === 'snippet') {
+        // use block template from JSON file, add value and action_id
+        let block = blockOne;
+        block.blocks[0].elements[0].value = fileEvent.file_id;
+        block.blocks[0].elements[0].action_id = 'save_gist_snippet';
 
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
@@ -216,43 +245,10 @@ slackEvents.on('file_created', (fileEvent, body) => {
           channel: file.file.channels[0],
           text: `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
           attachments: [
-            {
-              "blocks": [
-                {
-                  "type": "actions",
-                  "elements": [
-                    {
-                      "type": "button",
-                      "text": {
-                        "type": "plain_text",
-                        "emoji": true,
-                        "text": "Yeah"
-                      },
-                      "value": fileEvent.file_id,
-                      "action_id": "save_gist_snippet",
-                      "style": "primary"
-                    },
-                    {
-                      "type": "button",
-                      "text": {
-                        "type": "plain_text",
-                        "emoji": true,
-                        "text": "Nah"
-                      },
-                      "value": "click_me_123",
-                      "style": "danger"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+            block,
+          ],
         });
-
-
-
       }
-      // if (file.file)
     })
     .catch(err => console.error(err));
 
@@ -284,7 +280,6 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
   return superagent.post(`${process.env.BOT_API_SERVER}/createGist`)
     .send(gist)
     .then((res) => {
-      console.log('line 200');
       respond({
         text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
         replace_original: true,

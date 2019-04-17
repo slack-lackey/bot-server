@@ -1,0 +1,30 @@
+{
+  "blocks": [
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Yeah"
+          },
+          "value": "some_value",
+          "action_id": "save_gist_snippet",
+          "style": "primary"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Nah"
+          },
+          "value": "click_me_123",
+          "style": "danger"
+        }
+      ]
+    }
+  ]
+}

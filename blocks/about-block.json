@@ -1,0 +1,131 @@
+[
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": " "
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "Hello USERNAME, I am so happy you wanted to meet my family!! \n\nThey are all amazing developers with a desire to make useful coding tools for people like you!"
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/jkFJzPt.png",
+          "alt_text": "Slack Lackey"
+      }
+  },
+  {
+      "type": "divider"
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*SLACK LACKEY DEVELOPMENT TEAM*"
+      }
+  },
+  {
+      "type": "divider"
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Billy Bunn:* Just say anything, George, say what ever's natural, the first thing that comes to your mind. Take that you mutated son-of-a-bitch. My pine, why you. You space bastard, you killed a pine. You do? Yeah, it's 8:00. Hey, McFly, I thought I told you never to come in here."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/RYWTdGh.png",
+          "alt_text": "billy bot"
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Christ Merritt:* Gangplank draft to go on account gangway Sail ho square-rigged ahoy bilge water spike pink. Lanyard Sea Legs to go on account marooned grog bring a spring upon her cable interloper careen boatswain fluke."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/g7dNuxz.png",
+          "alt_text": "chris bot"
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Erin Trainor:* Pastry tiramisu candy. Powder cake apple pie pie cupcake. Ice cream fruitcake chocolate cake topping. Candy marshmallow oat cake chupa chups muffin sweet macaroon sesame snaps powder. Muffin apple pie toffee chocolate pastry gingerbread soufflé topping."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/6DDsiQ5.png",
+          "alt_text": "erin bot"
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Vanessa Wei:* Let your imagination be your guide. Let's do that again. It's all a game of angles. How to paint. That's easy. What to paint. That's much harder. Maybe he has a little friend that lives right over here. You better get your coat out, this is going to be a cold painting."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/0BA3fOC.png",
+          "alt_text": "vanessa bot"
+      }
+  },
+  {
+      "type": "divider"
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*SLACK LACKEY SUPPORT STAFF*"
+      }
+  },
+  {
+      "type": "divider"
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*John Cokos:* I'm a chef, a developer, a helluva manager and motivator, and although nobody will give it to me, I'm taking full credit for turning the Internet upside down about 20 years ago ... taking some huge risks and making some equally huge impacts."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/QqY5Nok.png",
+          "alt_text": "john bot"
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Ix Procopios:* Born and raised in Washington State, I truly believe that feedback is a gift. As Angela Duckworth said, “Perseverance is the daily discipline of trying to do things better than we did yesterday.”"
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/Vfj8MYY.png",
+          "alt_text": "ix bot"
+      }
+  },
+  {
+      "type": "section",
+      "text": {
+          "type": "mrkdwn",
+          "text": "*Hannah Ingham:* JavaScript developer motivated to use technology as a way to connect people, empower consumers, and boost community engagement."
+      },
+      "accessory": {
+          "type": "image",
+          "image_url": "https://i.imgur.com/cqMzpmZ.png",
+          "alt_text": "hannah bot"
+      }
+  }
+]
