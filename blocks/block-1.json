@@ -21,7 +21,8 @@
             "emoji": true,
             "text": "Nah"
           },
-          "value": "click_me_123",
+          "value": "dont_save",
+          "action_id": "dont_save",
           "style": "danger"
         }
       ]

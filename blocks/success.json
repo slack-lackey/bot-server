@@ -1,0 +1,52 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n<https://media.giphy.com/media/zaqclXyLz3Uoo/giphy.gif>\n\n"
+    },
+    "accessory": {
+      "type": "image",
+      "image_url": "https://i.imgur.com/jkFJzPt.png",
+      "alt_text": "slack lackey"
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "image",
+    "title": {
+      "type": "plain_text",
+      "text": "Success",
+      "emoji": true
+    },
+    "image_url": "https://media.giphy.com/media/skmziDEEjiin6/giphy.gif",
+    "alt_text": "Success GIF"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": " ",
+      "emoji": true
+    }
+  },
+  {
+    "type": "divider"
+  },
+  {
+    "type": "actions",
+    "elements": [
+      {
+        "type": "button",
+        "text": {
+          "type": "plain_text",
+          "text": "Share to Channel",
+          "emoji": true
+        },
+        "value": "click_me_123"
+      }
+    ]
+  }
+]

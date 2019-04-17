@@ -9,6 +9,7 @@ const gists = mongoose.Schema({
   date: {type:String, required: true},
   channel: {type:String, required: true},
   keywords: {type:Array, required: false},
+  user: {type:String, required: true},
   url: {type:String, required: true},
 });
 
