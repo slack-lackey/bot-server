@@ -166,6 +166,10 @@ slackEvents.on('message', (message, body) => {
       "token": token,
       "user": message.user,
     })
+
+
+    // Send a message and buttons to save/not save to the user
+    // entire message object is passed in as the "value" of the "save" button
       .then(res => {
         // attach display name to the message object
         message.username = res.user.profile.display_name;
@@ -175,27 +179,22 @@ slackEvents.on('message', (message, body) => {
         block.blocks[0].elements[0].value = JSON.stringify(message);
         block.blocks[0].elements[0].action_id = 'save_gist';
 
-        let attachment_tmp = JSON.stringify([block]);
-        let text_message = `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`;
-        // Send a message and buttons to save/not save to the user
-        // entire message object is passed in as the "value" of the "save" button
-        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + token
-          + '&user=' + message.user + '&channel=' + message.channel + '&attachments=' + attachment_tmp + '&text=' + text_message;
+        slack.chat.postEphemeral({
+          token: token,
+          channel: message.channel,
+          text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+          user: message.user,
+          attachments: [
+            block,
+          ],
+        });
+      });
 
-        console.log('line 185');
-        superagent.post(postEphemeralURL).send()
-          .set('Content-Type', 'application/json;charset=utf-8')
-          .then();
-      })
-      .catch(err => console.log(err));
   }
 
   // ***** If message contains "get my gists", send back a link from the GitHub API
   if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
     const slack = getClientByTeamId(body.team_id);
-
-
-
 
     db.get()
       .then(res => {
@@ -216,14 +215,8 @@ slackEvents.on('message', (message, body) => {
         });
       })
 
-
-
-
-
-
       .catch(err => console.log(err));
   }
-
 
   // ***** If message contains "family", send back a the "about-block" contents
   if (!message.subtype && message.text.indexOf('family') >= 0) {
@@ -260,15 +253,15 @@ slackEvents.on('file_created', (fileEvent, body) => {
 
         // Send a message and buttons to save/not save to the user
         // entire message object is passed in as the "value" of the "save" button
-        let user = file.file.user;
-        let channel = file.file.channels[0];
-        let text = `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`;
-        let attachment_tmp = JSON.stringify([block]);
-        let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + token
-          + '&user=' + user + '&channel=' + channel + '&attachments=' + attachment_tmp + '&text=' + text;
-        superagent.post(postEphemeralURL).send()
-          .set('Content-Type', 'application/json;charset=utf-8')
-          .then();
+        slack.chat.postEphemeral({
+          token: token,
+          channel: file.file.channels[0],
+          text: `Hey, <@${file.file.user}>, looks like you pasted a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
+          user: file.file.user,
+          attachments: [
+            block,
+          ],
+        });
       }
     })
     .catch(err => console.error(err));
