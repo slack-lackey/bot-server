@@ -262,7 +262,7 @@ slackEvents.on('file_created', (fileEvent, body) => {
         let user = file.file.user;
         let channel = file.file.channels[0];
         let text = `Hey, <@${file.file.user}>, looks like you made a code snippet. Want me to save it for you as a Gist? :floppy_disk:`;
-        // console.log(x);
+        let attachment_tmp = JSON.stringify([block]);
         let postEphemeralURL = 'https://slack.com/api/chat.postEphemeral?token=' + process.env.SLACK_AUTH_TOKEN 
         + '&user=' + user + '&channel='+ channel +'&attachments=' + attachment_tmp + '&text=' + text;
         superagent.post(postEphemeralURL).send()
