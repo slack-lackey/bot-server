@@ -326,7 +326,12 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
           file.username = res.user.profile.display_name;
 
           // Make an object to send to the API server to save a Gist
-          let title = file.file.name;
+          let title;
+          if (file.file.name[0] === '-') {
+            title = file.username.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now() + '.' + file.file.name.split('.').pop();
+          } else {
+            title = file.file.name;
+          }
           let description = `Created by ${file.username} on ${moment().format('dddd, MMMM Do YYYY, h:mm:ss a')}`;
           let content = file.content;
           const gist = { title, description, content };
