@@ -10,6 +10,13 @@ require('dotenv').config();
 const express = require('express');
 const superagent = require('superagent');
 const moment = require('moment');
+const mongoose = require('mongoose');
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+};
+
+mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
 
 // Slack APIs
 const { WebClient } = require('@slack/web-api');
@@ -44,6 +51,36 @@ const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
 // Initialize a Local Storage object to store authorization info
 // NOTE: This is an insecure method and thus for demo purposes only!
 const botAuthorizationStorage = new LocalStorage('./storage');
+
+
+// Route to populate mongo db
+app.get('/test', test);
+
+// Call function with:
+// echo '{"title":"test", "author": "Billy", "date":"4/17/19", "channel":"SDFHF39", "keywords":["array", "random", "javascript"], "url":"www.google.com", "user":"1234455"}' | http POST https://9a061648.ngrok.io/test
+
+
+
+function test(request, response) {
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }))
+  let db = require('./database/gist-model.js');
+
+  // console.log('*****request: ', request.body);
+  let obj = {
+    title: 'chris-merritt-1555531821767.js',
+    author: 'Chris Merritt',
+    date: 'Wednesday, April 17th 2019, 12:10:23 pm',
+    channel: 'CHQM8RNMP',
+    keywords: undefined,
+    user: 'UHL424Y9F',
+    url: 'https://gist.github.com/SlackLackey/2086215da0ad8a174476f409b2f7a341'
+  }
+  db.post(obj);
+
+  // db.post(request.body);
+  response.status(200).send('posted ok check compass');
+}
 
 /***************************************************
 ---------- HELPER FUNCTIONS ----------
@@ -87,35 +124,6 @@ app.use(passport.initialize());
 app.get('/', (req, res) => {
   res.send('<a href="/auth/slack"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>');
 });
-
-
-//test post please ignore
-app.post('/test', test);
-function test(request, response) {
-  console.log('*****request: ', request.body);
-  let db = require('./database/gist-model.js');
-  db.post(request.query);
-  response.status(200).send('posted ok check compass');
-}
-app.get('/getGists', getGists);
-function getGists(request, response) {
-  let db = require('./database/gist-model.js');
-  db.get()
-    .then(res => {
-      let result = [];
-      res.forEach(item => {
-        if (item.keywords.includes(request.query.check)) {
-          result.push(item.url);
-        }
-      });
-      return result;
-    })
-    .then(result => {
-      response.status(200).send(result);
-    });
-}
-
-
 
 app.get('/auth/slack', passport.authenticate('slack', {
   scope: ['bot'],
@@ -215,23 +223,23 @@ slackEvents.on('message', (message, body) => {
     });
   }
 
-/*
-  if (!message.subtype && message.text.indexOf('test') >= 0) {
-    const slack = getClientByTeamId(body.team_id);
-
-    let block = blockOne;
-    block.blocks[0].elements[0].value = JSON.stringify(message);
-    block.blocks[0].elements[0].action_id = 'test';
-
-    slack.chat.postMessage({
-      channel: message.channel,
-      text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
-      attachments: [
-        block,
-      ],
-    });
-  }
-  */
+  /*
+    if (!message.subtype && message.text.indexOf('test') >= 0) {
+      const slack = getClientByTeamId(body.team_id);
+  
+      let block = blockOne;
+      block.blocks[0].elements[0].value = JSON.stringify(message);
+      block.blocks[0].elements[0].action_id = 'test';
+  
+      slack.chat.postMessage({
+        channel: message.channel,
+        text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+        attachments: [
+          block,
+        ],
+      });
+    }
+    */
 
 
 
