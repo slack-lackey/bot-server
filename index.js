@@ -168,8 +168,8 @@ slackEvents.on('message', (message, body) => {
     })
 
 
-    // Send a message and buttons to save/not save to the user
-    // entire message object is passed in as the "value" of the "save" button
+      // Send a message and buttons to save/not save to the user
+      // entire message object is passed in as the "value" of the "save" button
       .then(res => {
         // attach display name to the message object
         message.username = res.user.profile.display_name;
@@ -195,6 +195,7 @@ slackEvents.on('message', (message, body) => {
   // ***** If message contains "get my gists", send back a link from the GitHub API
   if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
     const slack = getClientByTeamId(body.team_id);
+    let token = botAuthorizationStorage.getItem(body.team_id);
 
     db.get()
       .then(res => {
@@ -209,11 +210,15 @@ slackEvents.on('message', (message, body) => {
         return result;
       })
       .then(result => {
-        slack.chat.postMessage({
+        slack.chat.postEphemeral({
+          token: token,
           channel: message.channel,
           text: 'Your gists are here: ' + result,
+          user: message.user,
         });
+
       })
+
 
       .catch(err => console.log(err));
   }
@@ -221,11 +226,15 @@ slackEvents.on('message', (message, body) => {
   // ***** If message contains "family", send back a the "about-block" contents
   if (!message.subtype && message.text.indexOf('family') >= 0) {
     const slack = getClientByTeamId(body.team_id);
+    let token = botAuthorizationStorage.getItem(body.team_id);
 
     let block = aboutBlock;
 
-    slack.chat.postMessage({
+    slack.chat.postEphemeral({
+      token: token,
       channel: message.channel,
+      text: '',
+      user: message.user,
       blocks: block,
     });
   }
