@@ -31,6 +31,7 @@ const SlackStrategy = require('@aoberoi/passport-slack').default.Strategy;
 
 const blockOne = require('./blocks/block-1.json');
 const blockTwo = require('./blocks/block-2.json');
+const blockSuccess = require('./blocks/success.json');
 const aboutBlock = require('./blocks/about.json');
 
 
@@ -332,6 +333,15 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
       // console.log(obj);
       db.post(obj);
 
+      let block = blockSuccess;
+      block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
+      // block[1].elements[0].url = res.text;
+
+      respond({
+        blocks: block,
+        replace_original: true,
+      });
+
       respond({
         text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
         replace_original: true,
@@ -397,8 +407,12 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
               db.post(obj);
 
 
+              let block = blockSuccess;
+              block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
+              // block[1].elements[0].url = res.text;
+
               respond({
-                text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
+                blocks: block,
                 replace_original: true,
               });
             })
