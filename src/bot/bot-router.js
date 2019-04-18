@@ -230,11 +230,6 @@ const saveGistAction = (payload, respond) => {
         replace_original: true,
       });
 
-      respond({
-        text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
-        replace_original: true,
-      });
-
     })
 
     .catch((error) => {
@@ -292,6 +287,7 @@ const saveGistSnippetAction = (payload, respond) => {
 
           let block = blockSuccess;
           block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
+          block[5].elements[0].value = res.text;
           // pick a random "success" gif
           block[2].image_url = randomGif();
 
