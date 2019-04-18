@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint '**/*.js'",
-    "test": "jest --verbose",
+    "test": "jest --coverage --verbose",
     "test-watch": "jest --watchAll --verbose"
   },
   "author": "Slack Lackey Team",

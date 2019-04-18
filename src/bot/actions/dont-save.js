@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = (payload, respond) => {
+  console.log('**** RESPOND:',respond);
   if(!payload || !respond){return null;}
   else{
     respond({
