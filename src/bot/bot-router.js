@@ -79,7 +79,7 @@ const codeBlockMessage = (message, body) => {
       slack.chat.postEphemeral({
         token: token,
         channel: message.channel,
-        text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+        text: `Hey, <@${message.user}>, I saw that you shared a code snippet!\n\n*Do you want to save it as a Gist on GitHub?*\n\n*Reminder:* _Did you give your code snippet a "Title"? If not you can go add one by clicking the :pencil2: to the right of your snippet message and editing the file_`,
         user: message.user,
         attachments: [block],
       });
@@ -145,7 +145,7 @@ slackEvents.on('message', (message, body) => {
   };
 
   // ***** If message contains "<bot_id> help", send back a the "help" block contents
-  if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
+  if (!message.subtype && message.text.indexOf('slack-lackey-help') >= 0) {
     getHelp(message, body);
   }
 
@@ -170,7 +170,7 @@ const snippetCreated = (fileEvent, body) => {
         slack.chat.postEphemeral({
           token: token,
           channel: file.file.channels[0],
-          text: `Hey, <@${file.file.user}>, looks like you pasted a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
+          text: `Hey, <@${file.file.user}>, I saw that you shared a code snippet!\n\n*Do you want to save it as a Gist on GitHub?*\n\n*Reminder:* _Did you give your code snippet a "Title"? If not you can go add one by clicking the :pencil2: to the right of your snippet message and editing the file_`,
           user: file.file.user,
           attachments: [
             block,
@@ -184,6 +184,41 @@ const snippetCreated = (fileEvent, body) => {
 
 slackEvents.on('file_created', (fileEvent, body) => {
   snippetCreated(fileEvent, body);
+});
+
+const snippetChanged = (fileEvent, body) => {
+  const slack = getClientByTeamId(body.team_id);
+  let token = botAuthorizationStorage.getItem(body.team_id);
+
+  return slack.files.info({ 'token': token, 'file': fileEvent.file_id })
+    .then(file => {
+
+      // only acts on created snippets
+      if (file.file.mode === 'snippet') {
+
+        // get block, add file id and change "save" button's action_id
+        let block = blockOne;
+        block.blocks[0].elements[0].value = fileEvent.file_id;
+        block.blocks[0].elements[0].action_id = 'save_gist_snippet';
+
+        // Send a "Visible only to you" message with "save"/"don't save" buttons
+        slack.chat.postEphemeral({
+          token: token,
+          channel: file.file.channels[0],
+          text: `Hey, <@${file.file.user}>, looks like you changed a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
+          user: file.file.user,
+          attachments: [
+            block,
+          ],
+        });
+      }
+    })
+
+    .catch(err => console.error(err));
+};
+
+slackEvents.on('file_changed', (fileEvent, body) => {
+  snippetChanged(fileEvent, body);
 });
 
 /***************************************************

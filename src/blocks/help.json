@@ -3,7 +3,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*Hi USERNAME! My name is Slack Lackey and I am ready and waiting to share your favorite code snippets with the world,* (_or at least the portion of the world with a GitHub_) *by saving them as Gists in a shared GitHub account.*"
+      "text": "*Hello! My name is Slack Lackey and I am ready and waiting to share your favorite code snippets with the world,* (_or at least the portion of the world with a GitHub_) *by saving them as Gists in a shared GitHub account.*"
     },
     "accessory": {
       "type": "image",
@@ -18,7 +18,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*HERE'S WHAT I CAN DO...*"
+      "text": "*GET HELP*  -  Post a message containing `slack-lackey-help`\n\n_I will show this message :sunglasses:._"
     }
   },
   {
@@ -28,104 +28,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey help* - I will show this message :sunglasses:."
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you share a portion of code wrapped in ``` I will ask you if you want to save it as a Gist."
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you create a code snippet by clicking the :heavy_plus_sign: to the left of the message input box, I will ask if you want to save it as a Gist.\n\n *Reminder: * _Don't forget to give your code snippet a Title and a Type. If you forget, I can still do my work but you may have a harder time querying your snippet later._\n\n If you say you want to save your snippet as a Gist, I will ask you a few more questions"
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "fields": [
-      {
-        "type": "mrkdwn",
-        "text": "*Title*"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "Descriptive file name"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "*Author*"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "Who wrote the snippet?"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "*Data Structures*"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "A list of common data structures"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "*Code Tools*"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "Tips and tricks for common code tools"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "*Other Random Topics*"
-      },
-      {
-        "type": "mrkdwn",
-        "text": "When your snippet defies categorization"
-      }
-    ]
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "*Note:* You can choose 0 to 1 option per drop down menu.\n\n"
-    }
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "*Need additonal keywords?* Ask my creators to add them for you!"
+      "text": "*SAVE A CODE BLOCK*  -  Post a code block wrapped in three backticks ` ``` ` \n\n_I will ask you if you want to save it as a Gist._"
     }
   },
   {
@@ -135,7 +38,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "Click *'Save as a Gist!'*\n\nI will do all of the work for you and send you back a message with your new Gist url and a button you can use to go visit it on GitHub."
+      "text": "*SAVE A CODE SNIPPET*  -  Click the :heavy_plus_sign: to the left of the message input box\n\n _I will ask if you want to save it as a Gist._"
     }
   },
   {
@@ -145,39 +48,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "If you feel like sharing, you can also share your new Gist with your channel!\n\nAll you have to do is click *'Share to Channel'*"
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey get all gists*, I will go get a list of all of the Gists in the GitHub linked to this channel."
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey get [keyword] gists*, I will bring back a list of Gists with that keyword."
+      "text": "*SAVE AN EDITED CODE SNIPPET* _(before saving it as a Gist)_  -   Click the :pencil2: to the right of the Slack post.\n\n _I will ask if you want to save your edited snippet as a Gist._"
     }
   },
   {
@@ -187,14 +58,8 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "*Notes:* \nAll keywords must be lowercase. \n_*Example:* mongo || linked list || css tricks_\n\nYou can search for partial keywords.\n_*Example:* css || hash || list_"
+      "text": "*GET YOUR GISTS*  -  Post a message containing `get my gists`\n\n _I will bring back a list of all the Gists that you have previously created._" 
     }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
   },
   {
     "type": "divider"
@@ -203,55 +68,7 @@
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey get my gists*, I will bring back a list of Gists that you have previously created." 
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey get gists from [mm/dd/yy]*, I will bring back a list of Gists that were created on that date."
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "If you call me with *@Slack Lackey get gists from [mm/dd/yy] and [mm/dd/yy]*, I will bring back a list of Gists that were created inclusive of and between those dates."
-    }
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "section",
-    "text": {
-      "type": "mrkdwn",
-      "text": "*It has been nice to meet you! Learn more about my family by clicking the button below...*"
+      "text": "*It has been nice to meet you! Learn more about my creators by clicking the button below...*"
     }
   },
   {
