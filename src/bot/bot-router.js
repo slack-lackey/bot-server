@@ -29,53 +29,34 @@ botRouter.use('/slack/actions', slackInteractions.requestListener());
 /***************************************************
 ---------- SLACK CHANNEL EVENT LISTENERS ----------
 ***************************************************/
-// Attaches listeners to the event adapter 
 
+// Event handlers
 const messageHandler = require('./events/message.js');
-
-// Listens for every "message" event
-slackEvents.on('message', messageHandler);
-
 const fileCreatedHandler = require('./events/file-created.js');
 
-// Listens for every "file_created" event
+// Attach listeners to the event adapter
+slackEvents.on('message', messageHandler);
 slackEvents.on('file_created', fileCreatedHandler);
 
 
 /***************************************************
 ---------- SLACK INTERACTIVE MESSAGES ----------
 ***************************************************/
-// Attaches listeners to the interactive message adapter
-// `payload` contains information about the action
 
+// Interactive message action handlers
 const handleSaveGistAction = require('./actions/save-gist.js');
-
-// ***** If block interaction "action_id" is "save_gist"
-slackInteractions.action({ actionId: 'save_gist' }, handleSaveGistAction);
-
 const handleSaveGistSnippetAction = require('./actions/save-gist-snippet.js');
-
-// ***** If block interaction "action_id" is "save_gist_snippet"
-slackInteractions.action({ actionId: 'save_gist_snippet' }, handleSaveGistSnippetAction);
-
 const handleDontSaveAction = require('./actions/dont-save.js');
-
-// ***** If block interaction "action_id" is "dont_save"
-slackInteractions.action({ actionId: 'dont_save' }, handleDontSaveAction);
-
 const handleFamilyAction = require('./actions/family.js');
-
-// ***** If block interaction "action_id" is "family"
-slackInteractions.action({ actionId: 'family' }, handleFamilyAction);
-
 const handleHelpAction = require('./actions/help.js');
-
-// ***** If block interaction "action_id" is "help"
-slackInteractions.action({ actionId: 'help' }, handleHelpAction);
-
 const handleShareGistAction = require('./actions/share-gist.js');
 
-// ***** If block interaction "action_id" is "share_gist_to_channel"
+// Attach listeners to the interactive message adapter
+slackInteractions.action({ actionId: 'save_gist' }, handleSaveGistAction);
+slackInteractions.action({ actionId: 'save_gist_snippet' }, handleSaveGistSnippetAction);
+slackInteractions.action({ actionId: 'dont_save' }, handleDontSaveAction);
+slackInteractions.action({ actionId: 'family' }, handleFamilyAction);
+slackInteractions.action({ actionId: 'help' }, handleHelpAction);
 slackInteractions.action({ actionId: 'share_gist_to_channel' }, handleShareGistAction);
 
 
