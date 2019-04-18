@@ -63,17 +63,23 @@ slackEvents.on('message', (message, body) => {
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons
   if (!message.subtype && message.text.indexOf('```') >= 0) {
 
-    // Get the user's display name
+    // get correct web client
     const slack = getClientByTeamId(body.team_id);
+    // get token from local storage
     let token = botAuthorizationStorage.getItem(body.team_id);
+
+    // get full user object to grab their display name
     slack.users.info({ 'token': token, 'user': message.user })
       .then(userObj => {
+        // add display name to message
         message.username = userObj.user.profile.display_name;
 
+        // get block, add full message and change "save" button's action_id
         let block = blockOne;
         block.blocks[0].elements[0].value = JSON.stringify(message);
         block.blocks[0].elements[0].action_id = 'save_gist';
 
+        // Send a "Visible only to you" message with "save"/"don't save" buttons
         slack.chat.postEphemeral({
           token: token,
           channel: message.channel,
@@ -89,6 +95,7 @@ slackEvents.on('message', (message, body) => {
     const slack = getClientByTeamId(body.team_id);
     let token = botAuthorizationStorage.getItem(body.team_id);
 
+    // find all gist links matching the user's id
     db.get()
       .then(res => {
         let result = '';
@@ -99,6 +106,8 @@ slackEvents.on('message', (message, body) => {
         });
         return result;
       })
+
+      // Send a "Visible only to you" messsage with all of the user's gist links
       .then(result => {
         slack.chat.postEphemeral({
           token: token,
@@ -113,12 +122,12 @@ slackEvents.on('message', (message, body) => {
 
   // ***** If message contains "<bot_id> help", send back a the "help" block contents
   if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
-
     const slack = getClientByTeamId(body.team_id);
     let token = botAuthorizationStorage.getItem(body.team_id);
 
     let block = helpBlock;
 
+    // Send a "Visible only to you" messsage with the "help" block
     slack.chat.postEphemeral({
       token: token,
       channel: message.channel,
@@ -135,20 +144,18 @@ slackEvents.on('file_created', (fileEvent, body) => {
   const slack = getClientByTeamId(body.team_id);
   let token = botAuthorizationStorage.getItem(body.team_id);
 
-  return slack.files.info({
-    'token': token,
-    'file': fileEvent.file_id,
-  })
+  return slack.files.info({ 'token': token, 'file': fileEvent.file_id })
     .then(file => {
 
+      // only acts on created snippets
       if (file.file.mode === 'snippet') {
-        // use block template from JSON file, add value and action_id
+
+        // get block, add file id and change "save" button's action_id
         let block = blockOne;
         block.blocks[0].elements[0].value = fileEvent.file_id;
         block.blocks[0].elements[0].action_id = 'save_gist_snippet';
 
-        // Send a message and buttons to save/not save to the user
-        // entire message object is passed in as the "value" of the "save" button
+        // Send a "Visible only to you" message with "save"/"don't save" buttons
         slack.chat.postEphemeral({
           token: token,
           channel: file.file.channels[0],
@@ -170,8 +177,6 @@ slackEvents.on('file_created', (fileEvent, body) => {
 ***************************************************/
 // Attaches listeners to the interactive message adapter
 // `payload` contains information about the action
-// Block Kit Builder can be used to explore the payload shape for various action blocks:
-// https://api.slack.com/tools/block-kit-builder
 
 // ***** If block interaction "action_id" is "save_gist"
 slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
@@ -223,7 +228,6 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
     });
 
 });
-
 
 // ***** If block interaction "action_id" is "save_gist_snippet"
 slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) => {
@@ -296,6 +300,7 @@ slackInteractions.action({ actionId: 'dont_save' }, (payload, respond) => {
   });
 });
 
+// ***** If block interaction "action_id" is "family"
 slackInteractions.action({ actionId: 'family' }, (payload, respond) => {
   let block = aboutBlock;
   respond({
@@ -304,6 +309,7 @@ slackInteractions.action({ actionId: 'family' }, (payload, respond) => {
   });
 });
 
+// ***** If block interaction "action_id" is "help"
 slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
   let block = helpBlock;
   respond({
@@ -312,7 +318,7 @@ slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
   });
 });
 
-// ***** If block interaction "action_id" is "hare_gist_to_channel"
+// ***** If block interaction "action_id" is "share_gist_to_channel"
 slackInteractions.action({ actionId: 'share_gist_to_channel' }, (payload, respond) => {
 
   const slack = getClientByTeamId(payload.team.id);
