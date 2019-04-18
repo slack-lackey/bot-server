@@ -1,7 +1,6 @@
 'use strict';
 
 const blockOne = require('../../blocks/block-1.json');
-
 const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
@@ -26,7 +25,7 @@ module.exports = (fileEvent, body) => {
         slack.chat.postEphemeral({
           token: token,
           channel: file.file.channels[0],
-          text: `Hey, <@${file.file.user}>, looks like you pasted a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,
+          text: `:wave: <@${file.file.user}>, want me to save that :point_up: code snippet as a Gist? :floppy_disk:`,
           user: file.file.user,
           attachments: [
             block,

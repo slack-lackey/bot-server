@@ -26,9 +26,9 @@ botRouter.use('/slack/events', slackEvents.expressMiddleware());
 // Ex: https://your-deployed-bot.com/slack/actions
 botRouter.use('/slack/actions', slackInteractions.requestListener());
 
-/***************************************************
----------- SLACK CHANNEL EVENT LISTENERS ----------
-***************************************************/
+/******************************************************
+---------- EVENTS ------------------------------------
+******************************************************/
 
 // Event handlers
 const messageHandler = require('./events/message.js');
@@ -39,9 +39,9 @@ slackEvents.on('message', messageHandler);
 slackEvents.on('file_created', fileCreatedHandler);
 
 
-/***************************************************
----------- SLACK INTERACTIVE MESSAGES ----------
-***************************************************/
+/******************************************************
+---------- INTERACTIVE MESSAGES ----------------------
+******************************************************/
 
 // Interactive message action handlers
 const handleSaveGistAction = require('./actions/save-gist.js');

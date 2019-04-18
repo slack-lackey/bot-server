@@ -31,7 +31,7 @@ module.exports = (message, body) => {
         slack.chat.postEphemeral({
           token: token,
           channel: message.channel,
-          text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+          text: `:wave: <@${message.user}>, want me to save that :point_up: code block as a Gist? :floppy_disk:`,
           user: message.user,
           attachments: [block],
         });
