@@ -1,22 +1,29 @@
-// 'use strict';
+'use strict';
 
-// console.log('got here to get-client.js');
-// const cwd = process.cwd();
-// const { WebClient } = require('@slack/web-api');
-// // const WebClient  = require('../server.js').WebClient;
+const cwd = process.cwd();
 
-// const LocalStorage = require('node-localstorage').LocalStorage;
-// const botAuthorizationStorage = new LocalStorage('../../storage');
+const { WebClient } = require('@slack/web-api');
+const LocalStorage = require('node-localstorage').LocalStorage;
 
-// const clients = require(`../server.js`);
-// console.log('CLIENTS:', clients);
+const botAuthorizationStorage = new LocalStorage(`${cwd}/storage`);
 
-// module.exports = (teamId) =>  {
-//   if (!clients[teamId] && botAuthorizationStorage.getItem(teamId)) {
-//     clients[teamId] = new WebClient(botAuthorizationStorage.getItem(teamId));
-//   }
-//   if (clients[teamId]) {
-//     return clients[teamId];
-//   }
-//   return null;
-// };
+
+// *************************
+// Helper Functions
+
+const clients = {};
+const getClientByTeamId = (teamId) => {
+  if (!clients[teamId] && botAuthorizationStorage.getItem(teamId)) {
+    clients[teamId] = new WebClient(botAuthorizationStorage.getItem(teamId));
+  }
+  if (clients[teamId]) {
+    return clients[teamId];
+  }
+  return null;
+};
+
+const getToken = (teamId) => {
+  return botAuthorizationStorage.getItem(teamId);
+};
+
+module.exports = {getClientByTeamId, getToken};

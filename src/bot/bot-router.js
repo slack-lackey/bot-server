@@ -1,18 +1,18 @@
 'use strict';
 
 require('dotenv').config();
-const cwd = process.cwd();
+// const cwd = process.cwd();
 const superagent = require('superagent');
 const moment = require('moment');
 
 const express = require('express');
 const botRouter = express.Router();
-const { WebClient } = require('@slack/web-api');
+// const { WebClient } = require('@slack/web-api');
 const { createEventAdapter } = require('@slack/events-api');
 const { createMessageAdapter } = require('@slack/interactive-messages');
-const LocalStorage = require('node-localstorage').LocalStorage;
+// const LocalStorage = require('node-localstorage').LocalStorage;
 
-const botAuthorizationStorage = new LocalStorage(`${cwd}/storage`);
+// const botAuthorizationStorage = new LocalStorage(`${cwd}/storage`);
 
 const blockOne = require('../blocks/block-1.json');
 const blockSuccess = require('../blocks/success.json');
@@ -31,16 +31,27 @@ const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
 });
 
 
-const clients = {};
-function getClientByTeamId(teamId) {
-  if (!clients[teamId] && botAuthorizationStorage.getItem(teamId)) {
-    clients[teamId] = new WebClient(botAuthorizationStorage.getItem(teamId));
-  }
-  if (clients[teamId]) {
-    return clients[teamId];
-  }
-  return null;
-}
+// // *************************
+// // Helper Functions
+
+// const clients = {};
+// const getClientByTeamId = (teamId) => {
+//   if (!clients[teamId] && botAuthorizationStorage.getItem(teamId)) {
+//     clients[teamId] = new WebClient(botAuthorizationStorage.getItem(teamId));
+//   }
+//   if (clients[teamId]) {
+//     return clients[teamId];
+//   }
+//   return null;
+// };
+
+// const getToken = (teamId) => {
+//   return botAuthorizationStorage.getItem(teamId);
+// };
+const getClientByTeamId = require('../lib/get-client.js').getClientByTeamId;
+const getToken = require('../lib/get-client.js').getToken;
+
+
 
 // *** Plug the event adapter into the express app as middleware ***
 // Corresponds to the "Request URL" in App Dashboard > Features > Event Subscriptions
@@ -61,10 +72,10 @@ botRouter.use('/slack/actions', slackInteractions.requestListener());
 const messageHandler = (message, body) => {
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons
   if (!message.subtype && message.text.indexOf('```') >= 0) {
-    // get correct web client
-    const slack = getClientByTeamId(body.team_id);
-    // get token from local storage
-    let token = botAuthorizationStorage.getItem(body.team_id);
+
+    let teamId = body.team_id;
+    const slack = getClientByTeamId(teamId); // get correct web client
+    const token = getToken(teamId); // get token from local storage
 
     // get full user object to grab their display name
     slack.users.info({ 'token': token, 'user': message.user })
@@ -90,8 +101,10 @@ const messageHandler = (message, body) => {
 
   // ***** If message contains "get my gists", send back a link from the GitHub API
   if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
-    const slack = getClientByTeamId(body.team_id);
-    let token = botAuthorizationStorage.getItem(body.team_id);
+
+    let teamId = body.team_id;
+    const slack = getClientByTeamId(teamId); // get correct web client
+    const token = getToken(teamId); // get token from local storage
 
     // find all gist links matching the user's id
     db.get()
@@ -120,8 +133,10 @@ const messageHandler = (message, body) => {
 
   // ***** If message contains "<bot_id> help", send back a the "help" block contents
   if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
-    const slack = getClientByTeamId(body.team_id);
-    let token = botAuthorizationStorage.getItem(body.team_id);
+
+    let teamId = body.team_id;
+    const slack = getClientByTeamId(teamId); // get correct web client
+    const token = getToken(teamId); // get token from local storage
 
     let block = helpBlock;
 
@@ -141,8 +156,10 @@ slackEvents.on('message', messageHandler);
 
 
 const fileCreatedHandler = (fileEvent, body) => {
-  const slack = getClientByTeamId(body.team_id);
-  let token = botAuthorizationStorage.getItem(body.team_id);
+
+  let teamId = body.team_id;
+  const slack = getClientByTeamId(teamId); // get correct web client
+  const token = getToken(teamId); // get token from local storage
 
   return slack.files.info({ 'token': token, 'file': fileEvent.file_id })
     .then(file => {
@@ -240,8 +257,9 @@ slackInteractions.action({ actionId: 'save_gist' }, handleSaveGistAction);
 const handleSaveGistSnippetAction = (payload, respond) => {
   let file_id = payload.actions[0].value;
 
-  const slack = getClientByTeamId(payload.user.team_id);
-  let token = botAuthorizationStorage.getItem(payload.user.team_id);
+  let teamId = payload.user.team_id;
+  const slack = getClientByTeamId(teamId); // get correct web client
+  const token = getToken(teamId); // get token from local storage
   let file;
 
   slack.files.info({ 'token': token, 'file': file_id })
@@ -336,9 +354,10 @@ const handleHelpAction = (payload, respond) => {
 slackInteractions.action({ actionId: 'help' }, handleHelpAction);
 
 const handleShareGistAction = (payload, respond) => {
-
-  const slack = getClientByTeamId(payload.team.id);
-  let token = botAuthorizationStorage.getItem(payload.team.id);
+  
+  let teamId = payload.user.team_id;
+  const slack = getClientByTeamId(teamId); // get correct web client
+  const token = getToken(teamId); // get token from local storage
 
   slack.chat.postMessage({
     token: token,
