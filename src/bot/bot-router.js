@@ -58,43 +58,38 @@ botRouter.use('/slack/actions', slackInteractions.requestListener());
 ***************************************************/
 // Attaches listeners to the event adapter 
 
-const codeBlockMessage = (message, body) => {
-  // get correct web client
-  const slack = getClientByTeamId(body.team_id);
-  // get token from local storage
-  let token = botAuthorizationStorage.getItem(body.team_id);
-
-  // get full user object to grab their display name
-  slack.users.info({ 'token': token, 'user': message.user })
-    .then(userObj => {
-      // add display name to message
-      message.username = userObj.user.profile.display_name;
-
-      // get block, add full message and change "save" button's action_id
-      let block = blockOne;
-      block.blocks[0].elements[0].value = JSON.stringify(message);
-      block.blocks[0].elements[0].action_id = 'save_gist';
-
-      // Send a "Visible only to you" message with "save"/"don't save" buttons
-      slack.chat.postEphemeral({
-        token: token,
-        channel: message.channel,
-        text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
-        user: message.user,
-        attachments: [block],
-      });
-    });
-};
-
-// Listens for every "message" event
-slackEvents.on('message', (message, body) => {
-
+const messageHandler = (message, body) => {
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons
   if (!message.subtype && message.text.indexOf('```') >= 0) {
-    codeBlockMessage(message, body);
+    // get correct web client
+    const slack = getClientByTeamId(body.team_id);
+    // get token from local storage
+    let token = botAuthorizationStorage.getItem(body.team_id);
+
+    // get full user object to grab their display name
+    slack.users.info({ 'token': token, 'user': message.user })
+      .then(userObj => {
+        // add display name to message
+        message.username = userObj.user.profile.display_name;
+
+        // get block, add full message and change "save" button's action_id
+        let block = blockOne;
+        block.blocks[0].elements[0].value = JSON.stringify(message);
+        block.blocks[0].elements[0].action_id = 'save_gist';
+
+        // Send a "Visible only to you" message with "save"/"don't save" buttons
+        slack.chat.postEphemeral({
+          token: token,
+          channel: message.channel,
+          text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
+          user: message.user,
+          attachments: [block],
+        });
+      });
   }
 
-  const getMyGists = (message, body) => {
+  // ***** If message contains "get my gists", send back a link from the GitHub API
+  if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
     const slack = getClientByTeamId(body.team_id);
     let token = botAuthorizationStorage.getItem(body.team_id);
 
@@ -121,14 +116,10 @@ slackEvents.on('message', (message, body) => {
       })
 
       .catch(err => console.error(err));
-  };
-
-  // ***** If message contains "get my gists", send back a link from the GitHub API
-  if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
-    getMyGists(message, body);
   }
 
-  const getHelp = (message, body) => {
+  // ***** If message contains "<bot_id> help", send back a the "help" block contents
+  if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
     const slack = getClientByTeamId(body.team_id);
     let token = botAuthorizationStorage.getItem(body.team_id);
 
@@ -142,16 +133,14 @@ slackEvents.on('message', (message, body) => {
       user: message.user,
       blocks: block,
     });
-  };
-
-  // ***** If message contains "<bot_id> help", send back a the "help" block contents
-  if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
-    getHelp(message, body);
   }
+};
 
-});
+// Listens for every "message" event
+slackEvents.on('message', messageHandler);
 
-const snippetCreated = (fileEvent, body) => {
+
+const fileCreatedHandler = (fileEvent, body) => {
   const slack = getClientByTeamId(body.team_id);
   let token = botAuthorizationStorage.getItem(body.team_id);
 
@@ -182,9 +171,9 @@ const snippetCreated = (fileEvent, body) => {
     .catch(err => console.error(err));
 };
 
-slackEvents.on('file_created', (fileEvent, body) => {
-  snippetCreated(fileEvent, body);
-});
+// Listens for every "file_created" event
+slackEvents.on('file_created', fileCreatedHandler);
+
 
 /***************************************************
 ---------- SLACK INTERACTIVE MESSAGES ----------
@@ -192,7 +181,8 @@ slackEvents.on('file_created', (fileEvent, body) => {
 // Attaches listeners to the interactive message adapter
 // `payload` contains information about the action
 
-const saveGistAction = (payload, respond) => {
+const handleSaveGistAction = (payload, respond) => {
+
   // Get the original message object (with the future Gist's content)
   const message = JSON.parse(payload.actions[0].value);
 
@@ -201,6 +191,7 @@ const saveGistAction = (payload, respond) => {
   let description = `Created by ${message.username} on ${moment().format('dddd, MMMM Do YYYY, h:mm:ss a')}`;
   let content = message.text.slice(message.text.indexOf('```') + 3, message.text.lastIndexOf('```'));
   const gist = { title, description, content };
+  console.log('GIST:', gist);
 
   // POST request to hosted API server which saves a Gist and returns a URL
   return superagent.post(`${process.env.BOT_API_SERVER}/createGist`)
@@ -240,14 +231,13 @@ const saveGistAction = (payload, respond) => {
     .catch((error) => {
       respond({ text: 'Sorry, there\'s been an error. Try again later.', replace_original: true });
     });
+
 };
 
 // ***** If block interaction "action_id" is "save_gist"
-slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
-  saveGistAction(payload, respond);
-});
+slackInteractions.action({ actionId: 'save_gist' }, handleSaveGistAction);
 
-const saveGistSnippetAction = (payload, respond) => {
+const handleSaveGistSnippetAction = (payload, respond) => {
   let file_id = payload.actions[0].value;
 
   const slack = getClientByTeamId(payload.user.team_id);
@@ -292,6 +282,7 @@ const saveGistSnippetAction = (payload, respond) => {
 
           let block = blockSuccess;
           block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
+          block[5].elements[0].value = res.text;
           // pick a random "success" gif
           block[2].image_url = randomGif();
 
@@ -310,12 +301,9 @@ const saveGistSnippetAction = (payload, respond) => {
 };
 
 // ***** If block interaction "action_id" is "save_gist_snippet"
-slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) => {
-  saveGistSnippetAction (payload, respond);
+slackInteractions.action({ actionId: 'save_gist_snippet' }, handleSaveGistSnippetAction);
 
-});
-
-const dontSaveAction = (payload, respond) => {
+const handleDontSaveAction = (payload, respond) => {
   respond({
     text: `Ok, I won't save it. If you change your mind, send your code (as a snippet or inside 3 backticks) to this channel again.`,
     replace_original: true,
@@ -323,11 +311,9 @@ const dontSaveAction = (payload, respond) => {
 };
 
 // ***** If block interaction "action_id" is "dont_save"
-slackInteractions.action({ actionId: 'dont_save' }, (payload, respond) => {
-  dontSaveAction(payload, respond);
-});
+slackInteractions.action({ actionId: 'dont_save' }, handleDontSaveAction);
 
-const familyAction = (payload, respond) => {
+const handleFamilyAction = (payload, respond) => {
   let block = aboutBlock;
   respond({
     blocks: block,
@@ -336,11 +322,9 @@ const familyAction = (payload, respond) => {
 };
 
 // ***** If block interaction "action_id" is "family"
-slackInteractions.action({ actionId: 'family' }, (payload, respond) => {
-  familyAction(payload, respond);
-});
+slackInteractions.action({ actionId: 'family' }, handleFamilyAction);
 
-const helpAction = (payload, respond) => {
+const handleHelpAction = (payload, respond) => {
   let block = helpBlock;
   respond({
     blocks: block,
@@ -349,11 +333,9 @@ const helpAction = (payload, respond) => {
 };
 
 // ***** If block interaction "action_id" is "help"
-slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
-  helpAction(payload, respond);
-});
+slackInteractions.action({ actionId: 'help' }, handleHelpAction);
 
-const shareGistAction = (payload, respond) => {
+const handleShareGistAction = (payload, respond) => {
 
   const slack = getClientByTeamId(payload.team.id);
   let token = botAuthorizationStorage.getItem(payload.team.id);
@@ -367,9 +349,7 @@ const shareGistAction = (payload, respond) => {
 };
 
 // ***** If block interaction "action_id" is "share_gist_to_channel"
-slackInteractions.action({ actionId: 'share_gist_to_channel' }, (payload, respond) => {
-  shareGistAction(payload, respond);
-});
+slackInteractions.action({ actionId: 'share_gist_to_channel' }, handleShareGistAction);
 
 
 module.exports = botRouter;
