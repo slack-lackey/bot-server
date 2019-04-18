@@ -5,7 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const authRouter = express.Router();
 const cwd = process.cwd();
-const { WebClient } = require('@slack/web-api');
+
 // Dependencies for OAuth
 const passport = require('passport');
 const LocalStorage = require('node-localstorage').LocalStorage;
@@ -14,28 +14,6 @@ const SlackStrategy = require('@aoberoi/passport-slack').default.Strategy;
 // Initialize a Local Storage object to store authorization info
 // NOTE: This is an insecure method and thus for demo purposes only!
 const botAuthorizationStorage = new LocalStorage(`${cwd}/storage`);
-
-
-
-
-/***************************************************
----------- HELPER FUNCTIONS ----------
-***************************************************/
-
-// Helpers to cache and lookup appropriate client
-// NOTE: Not enterprise-ready. if the event was triggered inside a shared channel, this lookup
-// could fail but there might be a suitable client from one of the other teams that is within that
-// shared channel.
-const clients = {};
-function getClientByTeamId(teamId) {
-  if (!clients[teamId] && botAuthorizationStorage.getItem(teamId)) {
-    clients[teamId] = new WebClient(botAuthorizationStorage.getItem(teamId));
-  }
-  if (clients[teamId]) {
-    return clients[teamId];
-  }
-  return null;
-}
 
 /***************************************************
 ---------- OAUTH MIDDLEWARE & ROUTES ----------
