@@ -14,7 +14,6 @@ const LocalStorage = require('node-localstorage').LocalStorage;
 
 const botAuthorizationStorage = new LocalStorage(`${cwd}/storage`);
 
-
 const blockOne = require('../blocks/block-1.json');
 const blockSuccess = require('../blocks/success.json');
 const aboutBlock = require('../blocks/about.json');
@@ -141,7 +140,7 @@ slackEvents.on('file_created', (fileEvent, body) => {
     'file': fileEvent.file_id,
   })
     .then(file => {
-      // console.log('LINE 158 FILE!!!!!!!!!', file);
+
       if (file.file.mode === 'snippet') {
         // use block template from JSON file, add value and action_id
         let block = blockOne;
@@ -174,12 +173,6 @@ slackEvents.on('file_created', (fileEvent, body) => {
 // Block Kit Builder can be used to explore the payload shape for various action blocks:
 // https://api.slack.com/tools/block-kit-builder
 
-
-
-
-
-
-
 // ***** If block interaction "action_id" is "save_gist"
 slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
 
@@ -196,7 +189,6 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
   return superagent.post(`${process.env.BOT_API_SERVER}/createGist`)
     .send(gist)
     .then((res) => {
-      // console.log('LINE 206 RES!!!!!!!!!', res);
 
       let obj = {
         title: title,
@@ -207,13 +199,12 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
         user: message.user,
         url: res.text,
       };
+
       db.post(obj);
 
       let block = blockSuccess;
       block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
-
       block[5].elements[0].value = res.text;
-
 
       respond({
         blocks: block,
@@ -224,21 +215,14 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
         text: 'I saved it as a gist for you. You can find it here:\n' + res.text,
         replace_original: true,
       });
+
     })
+
     .catch((error) => {
       respond({ text: 'Sorry, there\'s been an error. Try again later.', replace_original: true });
     });
 
 });
-
-
-
-
-
-
-
-
-
 
 
 // ***** If block interaction "action_id" is "save_gist_snippet"
@@ -256,7 +240,7 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
       return slack.users.info({ 'token': token, 'user': file.file.user });
     })
     .then(userObj => {
-      // console.log('***** userObj:', userObj);
+
       file.username = userObj.user.profile.display_name;
 
       // Make an object to send to the API server to save a Gist
@@ -273,7 +257,7 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
       // POST request to hosted API server which saves a Gist and returns a URL
       return superagent.post(`${process.env.BOT_API_SERVER}/createGist`).send(gist)
         .then((res) => {
-          // console.log('LINE 282 res!!!!!!!!!', res);
+
           let obj = {
             title: title,
             author: file.username,
@@ -286,7 +270,6 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
 
           db.post(obj);
 
-
           let block = blockSuccess;
           block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
 
@@ -294,16 +277,18 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
             blocks: block,
             replace_original: true,
           });
+
         })
+
         .catch((error) => {
           respond({ text: 'Sorry, there\'s been an error. Try again later.', replace_original: true });
         });
+
     });
 
 });
 
-
-
+// ***** If block interaction "action_id" is "dont_save"
 slackInteractions.action({ actionId: 'dont_save' }, (payload, respond) => {
   respond({
     text: `Ok, I won't save it. If you change your mind, send your code (as a snippet or inside 3 backticks) to this channel again.`,
@@ -327,6 +312,7 @@ slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
   });
 });
 
+// ***** If block interaction "action_id" is "hare_gist_to_channel"
 slackInteractions.action({ actionId: 'share_gist_to_channel' }, (payload, respond) => {
 
   const slack = getClientByTeamId(payload.team.id);
