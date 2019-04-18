@@ -19,6 +19,7 @@ const blockSuccess = require('../blocks/success.json');
 const aboutBlock = require('../blocks/about.json');
 const helpBlock = require('../blocks/help.json');
 const db = require('../database/gist-model.js');
+const randomGif = require('../lib/random-gif.js');
 
 
 // Initialize interactive message adapter using signing secret from environment variables
@@ -210,6 +211,8 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
       let block = blockSuccess;
       block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
       block[5].elements[0].value = res.text;
+      // pick a random "success" gif
+      block[2].image_url = randomGif();
 
       respond({
         blocks: block,
