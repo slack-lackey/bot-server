@@ -11,6 +11,7 @@ const botRouter = require('./bot/bot-router.js');
 // Initialize an Express application
 const app = express();
 
+// Routers
 app.use(auth);
 app.use(botRouter);
 
