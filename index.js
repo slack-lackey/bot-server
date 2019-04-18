@@ -334,12 +334,13 @@ slackInteractions.action({ actionId: 'save_gist' }, (payload, respond) => {
         user: message.user,
         url: res.text,
       };
-      // console.log(obj);
       db.post(obj);
 
       let block = blockSuccess;
       block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
-      // block[1].elements[0].url = res.text;
+
+      block[5].elements[0].value = res.text;
+
 
       respond({
         blocks: block,
@@ -449,6 +450,33 @@ slackInteractions.action({ actionId: 'help' }, (payload, respond) => {
     blocks: block,
     replace_original: true,
   });
+});
+
+slackInteractions.action({ actionId: 'share_gist_to_channel' }, (payload, respond) => {
+  console.log('********** PAYLOAD:', payload);
+
+
+  const slack = getClientByTeamId(payload.team.id);
+  let token = botAuthorizationStorage.getItem(payload.team.id);
+
+  slack.chat.postMessage({
+    token: token,
+    channel: payload.channel.id,
+    text: '<@' + payload.user.id + '> shared this Gist with the channel:\n' + payload.actions[0].value,
+  });
+
+  // block[5].elements[0].value = res.text;
+
+
+  // respond({
+  //   text: 'Hey everyone, this is visible!',
+  //   replace_original: true,
+  // });
+
+  // return {
+  //   text: 'Hey everyone, this is visible!',
+  // };
+
 });
 
 
