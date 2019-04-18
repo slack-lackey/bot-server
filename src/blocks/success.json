@@ -45,6 +45,7 @@
           "text": "Share to Channel",
           "emoji": true
         },
+        "action_id": "share_gist_to_channel",
         "value": "click_me_123"
       }
     ]
