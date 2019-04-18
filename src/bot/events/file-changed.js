@@ -5,7 +5,6 @@ const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (fileEvent, body) => {
-  console.log('file was edited');
 
   let teamId = body.team_id;
   const slack = getClientByTeamId(teamId); // get correct web client
@@ -26,7 +25,7 @@ module.exports = (fileEvent, body) => {
         slack.chat.postEphemeral({
           token: token,
           channel: file.file.channels[0],
-          text: `Hey, <@${file.file.user}>, I saw that you shared a code snippet!\n\n*Do you want to save it as a Gist on GitHub?*\n\n*Reminder:* _Did you give your code snippet a "Title"? If not you can go add one by clicking the :pencil2: to the right of your snippet message and editing the file_`,
+          text: `Hey, <@${file.file.user}>, looks like you changed a code snippet. Want me to save it for you as a Gist? :floppy_disk:`,          
           user: file.file.user,
           attachments: [
             block,

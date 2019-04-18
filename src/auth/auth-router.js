@@ -47,10 +47,10 @@ authRouter.get('/auth/slack', passport.authenticate('slack', {
 authRouter.get('/auth/slack/callback',
   passport.authenticate('slack', { session: false }),
   (req, res) => {
-    res.send('<p>Greet and React was successfully installed on your team.</p>');
+    res.send('<p>Slack Lackey was successfully installed on your team.</p>');
   },
   (err, req, res, next) => {
-    res.status(500).send(`<p>Greet and React failed to install</p> <pre>${err}</pre>`);
+    res.status(500).send(`<p>Slack Lackey failed to install</p> <pre>${err}</pre>`);
   }
 );
 

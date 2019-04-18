@@ -1,20 +1,14 @@
-'use strict';
 
 
-const db = require('../../database/gist-model.js');
-const blockOne = require('../../blocks/block-1.json');
-const helpBlock = require('../../blocks/help.json');
+slackEvents.on('message', (message, body) => {
 
-const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
-const getToken = require('../../lib/web-api-helpers.js').getToken;
-
-module.exports = (message, body) => {
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons
   if (!message.subtype && message.text.indexOf('```') >= 0) {
 
-    let teamId = body.team_id;
-    const slack = getClientByTeamId(teamId); // get correct web client
-    const token = getToken(teamId); // get token from local storage
+    // get correct web client
+    const slack = getClientByTeamId(body.team_id);
+    // get token from local storage
+    let token = botAuthorizationStorage.getItem(body.team_id);
 
     // get full user object to grab their display name
     slack.users.info({ 'token': token, 'user': message.user })
@@ -31,7 +25,7 @@ module.exports = (message, body) => {
         slack.chat.postEphemeral({
           token: token,
           channel: message.channel,
-          text: `:wave: <@${message.user}>, want me to save that :point_up: code block as a Gist? :floppy_disk:`,
+          text: `Hey, <@${message.user}>, looks like you pasted a code block. Want me to save it for you as a Gist? :floppy_disk:`,
           user: message.user,
           attachments: [block],
         });
@@ -40,10 +34,8 @@ module.exports = (message, body) => {
 
   // ***** If message contains "get my gists", send back a link from the GitHub API
   if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
-
-    let teamId = body.team_id;
-    const slack = getClientByTeamId(teamId); // get correct web client
-    const token = getToken(teamId); // get token from local storage
+    const slack = getClientByTeamId(body.team_id);
+    let token = botAuthorizationStorage.getItem(body.team_id);
 
     // find all gist links matching the user's id
     db.get()
@@ -71,11 +63,9 @@ module.exports = (message, body) => {
   }
 
   // ***** If message contains "<bot_id> help", send back a the "help" block contents
-  if (!message.subtype && message.text.indexOf('slack-lackey-help') >= 0) {
-
-    let teamId = body.team_id;
-    const slack = getClientByTeamId(teamId); // get correct web client
-    const token = getToken(teamId); // get token from local storage
+  if (!message.subtype && message.text.indexOf('<@UHZ3J65K9> help') >= 0) {
+    const slack = getClientByTeamId(body.team_id);
+    let token = botAuthorizationStorage.getItem(body.team_id);
 
     let block = helpBlock;
 
@@ -88,4 +78,5 @@ module.exports = (message, body) => {
       blocks: block,
     });
   }
-};
+
+});
