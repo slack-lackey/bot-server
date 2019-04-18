@@ -279,6 +279,8 @@ slackInteractions.action({ actionId: 'save_gist_snippet' }, (payload, respond) =
 
           let block = blockSuccess;
           block[0].text.text = '*I saved your Gist!*\n\nHere is your URL if you want to share it with others.\n\n' + res.text + '\n\n';
+          // pick a random "success" gif
+          block[2].image_url = randomGif();
 
           respond({
             blocks: block,
