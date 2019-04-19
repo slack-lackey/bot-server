@@ -1,9 +1,19 @@
 'use strict';
 
+/**
+ * Slack Event Hanlder — "file-created" Event
+ * Fired when a snippet file is created in Slack
+ * @module src/bot/events/file-created
+ */
+
 const blockOne = require('../../blocks/block-1.json');
 const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
 const getToken = require('../../lib/web-api-helpers.js').getToken;
-
+/**When a snippet is created, this function runs.
+ * @param  {} fileEvent
+ * @param  {} body
+ * @returns A message to the slack channel.
+ */
 module.exports = (fileEvent, body) => {
   if(!fileEvent || !body){return null;}
 

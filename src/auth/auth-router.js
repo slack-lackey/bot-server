@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Auth Router Module
+ * Connects app to Slack API through OAuth using the Client ID and Secret
+ * @module src/auth/auth-router
+ */
+
 require('dotenv').config();
 
 const express = require('express');

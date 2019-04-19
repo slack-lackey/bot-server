@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * Slack Interactive Message Hanlder — "save-gist-snippet" action
+ * Handles saving a Gist from a code snippet upon user input in a Slack interactive message
+ * @module src/bot/actions/save-gist-snippet
+ */
+
+
 const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
@@ -8,7 +15,11 @@ const moment = require('moment');
 const db = require('../../database/gist-model.js');
 const randomGif = require('../../lib/random-gif.js');
 const blockSuccess = require('../../blocks/success.json');
-
+/**When a code snippet is saved, return this function.
+ * @param  {} payload
+ * @param  {} respond
+ * @returns Post a value to the database and send a message to the slack channel.
+ */
 module.exports = (payload, respond) => {
   if(!payload || !respond){return null;}
   try{

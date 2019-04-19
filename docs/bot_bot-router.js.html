@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: bot/bot-router.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: bot/bot-router.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * Bot Router Module
+ * @module src/bot/bot-router
+ */
+
+require('dotenv').config();
+
+const express = require('express');
+const botRouter = express.Router();
+
+const { createEventAdapter } = require('@slack/events-api');
+const { createMessageAdapter } = require('@slack/interactive-messages');
+
+// Initialize interactive message adapter using signing secret from environment variables
+const slackInteractions = createMessageAdapter(process.env.SLACK_SIGNING_SECRET);
+
+// Initialize event adapter using signing secret from environment variables
+const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
+  includeBody: true,
+});
+
+// *** Plug the event adapter into the express app as middleware ***
+// Corresponds to the "Request URL" in App Dashboard > Features > Event Subscriptions
+// Ex: https://your-deployed-bot.com/slack/events
+botRouter.use('/slack/events', slackEvents.expressMiddleware());
+
+// *** Plug the interactive message adapter into the express app as middleware ***
+// Corresponds to the "Request URL" in App Dashboard > Features > Interactive Components
+// Ex: https://your-deployed-bot.com/slack/actions
+botRouter.use('/slack/actions', slackInteractions.requestListener());
+
+/******************************************************
+---------- EVENTS ------------------------------------
+******************************************************/
+
+// Event handlers
+const messageHandler = require('./events/message.js');
+const fileCreatedHandler = require('./events/file-created.js');
+const fileEditedHandler = require('./events/file-changed.js');
+
+// Attach listeners to the event adapter
+slackEvents.on('message', messageHandler);
+slackEvents.on('file_created', fileCreatedHandler);
+slackEvents.on('file_change', fileEditedHandler);
+
+/******************************************************
+---------- INTERACTIVE MESSAGES ----------------------
+******************************************************/
+
+// Interactive message action handlers
+const handleSaveGistAction = require('./actions/save-gist.js');
+const handleSaveGistSnippetAction = require('./actions/save-gist-snippet.js');
+const handleDontSaveAction = require('./actions/dont-save.js');
+const handleFamilyAction = require('./actions/family.js');
+const handleHelpAction = require('./actions/help.js');
+const handleShareGistAction = require('./actions/share-gist.js');
+
+// Attach listeners to the interactive message adapter
+slackInteractions.action({ actionId: 'save_gist' }, handleSaveGistAction);
+slackInteractions.action({ actionId: 'save_gist_snippet' }, handleSaveGistSnippetAction);
+slackInteractions.action({ actionId: 'dont_save' }, handleDontSaveAction);
+slackInteractions.action({ actionId: 'family' }, handleFamilyAction);
+slackInteractions.action({ actionId: 'help' }, handleHelpAction);
+slackInteractions.action({ actionId: 'share_gist_to_channel' }, handleShareGistAction);
+
+
+module.exports = botRouter;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-src_auth_auth-router.html">src/auth/auth-router</a></li><li><a href="module-src_bot_actions_about.html">src/bot/actions/about</a></li><li><a href="module-src_bot_actions_dont-save.html">src/bot/actions/dont-save</a></li><li><a href="module-src_bot_actions_help.html">src/bot/actions/help</a></li><li><a href="module-src_bot_actions_save-gist.html">src/bot/actions/save-gist</a></li><li><a href="module-src_bot_actions_save-gist-snippet.html">src/bot/actions/save-gist-snippet</a></li><li><a href="module-src_bot_actions_share-gist.html">src/bot/actions/share-gist</a></li><li><a href="module-src_bot_bot-router.html">src/bot/bot-router</a></li><li><a href="module-src_bot_events_file-changed.html">src/bot/events/file-changed</a></li><li><a href="module-src_bot_events_message.html">src/bot/events/message</a></li><li><a href="src_database_mongomodel.module_js.html">js</a></li></ul><h3>Classes</h3><ul><li><a href="Gist.html">Gist</a></li><li><a href="src_database_mongomodel.module_js-MongoModel.html">MongoModel</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getClientByTeamId">getClientByTeamId</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#gists">gists</a></li><li><a href="global.html#pickGif">pickGif</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Apr 19 2019 16:38:49 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

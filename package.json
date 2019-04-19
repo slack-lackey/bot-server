@@ -1,14 +1,15 @@
 {
   "name": "slack-bot",
   "version": "1.0.0",
-  "description": "Slackbot that saves code and images",
-  "main": "index.js",
+  "description": "Slackbot that saves code as Github Gists",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "lint": "eslint '**/*.js'",
     "test": "jest --coverage --verbose",
     "test-watch": "jest --watchAll --verbose",
-    "test2": "jest"
+    "test2": "jest",
+    "jsdoc": "jsdoc -c ./docs/config/jsdoc.config.json"
   },
   "author": "Slack Lackey Team",
   "license": "MIT",
@@ -22,6 +23,7 @@
     "express": "^4.16.3",
     "faker": "^4.1.0",
     "jest": "^24.7.1",
+    "jsdoc": "^3.5.5",
     "moment": "^2.24.0",
     "mongoose": "^5.5.2",
     "mongoose-schema-jsonschema": "^1.2.1",

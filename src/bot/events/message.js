@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Slack Event Hanlder — "message" Event
+ * Fired when a message is sent in Slack
+ * @module src/bot/events/message
+ */
+
 
 const db = require('../../database/gist-model.js');
 const blockOne = require('../../blocks/block-1.json');
@@ -7,7 +13,11 @@ const helpBlock = require('../../blocks/help.json');
 
 const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
 const getToken = require('../../lib/web-api-helpers.js').getToken;
-
+/**Parse the message and check the input to decide what function to run.
+ * @param  {} message
+ * @param  {} body
+ * @returns Sends a message to the Slack front end.
+ */
 module.exports = (message, body) => {
   if(!message || !body){return null;}
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons

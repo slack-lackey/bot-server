@@ -1,12 +1,21 @@
 'use strict';
 
+/**
+ * Slack Interactive Message Hanlder — "save-gist" action
+ * Handles saving a Gist from a code block upon user input in a Slack interactive message
+ * @module src/bot/actions/save-gist
+ */
+
 const superagent = require('superagent');
 const moment = require('moment');
 const db = require('../../database/gist-model.js');
 const randomGif = require('../../lib/random-gif.js');
 const blockSuccess = require('../../blocks/success.json');
-
-
+/**When a gist has been saved, runs this function.
+ * @param  {} payload
+ * @param  {} respond
+ * @returns posts a value to the database and sends a message to the channel.
+ */
 module.exports = (payload, respond) => {
   if(!payload || !respond){return null;}
 

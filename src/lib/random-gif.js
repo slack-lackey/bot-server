@@ -28,7 +28,10 @@ let gifArray = [
   'https://media.giphy.com/media/gxzJbCkfmus/giphy.gif',
   'https://media.giphy.com/media/n5VaQoW39Z9S0/giphy.gif',
 ];
-
+/**Pick a random GIF from the array.
+ * @param  {} array
+ * @returns A random gif.
+ */
 let pickGif = (array = gifArray) => {
   let selectedGif = array[faker.random.number({ min: 0, max: (array.length - 1) })];
   return selectedGif;

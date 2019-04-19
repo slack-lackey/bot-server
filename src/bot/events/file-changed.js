@@ -1,9 +1,19 @@
 'use strict';
 
+/**
+ * Slack Event Hanlder — "file-changed" Event
+ * Fired when a snippet file is edited in Slack
+ * @module src/bot/events/file-changed
+ */
+
 const blockOne = require('../../blocks/block-1.json');
 const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId;
 const getToken = require('../../lib/web-api-helpers.js').getToken;
-
+/**Listens if a file has been changed.
+ * @param  {} fileEvent
+ * @param  {} body
+ * @returns Sends a message to the slack channel.
+ */
 module.exports = (fileEvent, body) => {
   if(!fileEvent || !body){return null;}
   console.log('file changed successfully');

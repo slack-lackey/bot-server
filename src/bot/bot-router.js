@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Bot Router Module
+ * @module src/bot/bot-router
+ */
+
 require('dotenv').config();
 
 const express = require('express');
