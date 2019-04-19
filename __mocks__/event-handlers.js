@@ -2,13 +2,13 @@
 
 module.exports = exports = {};
 
-const respond = (obj) => {
-  if (typeof obj === 'object') {
-    return true;
-  } else {
-    return false;
-  }
-};
+// const respond = (obj) => {
+//   if (typeof obj === 'object') {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
 exports.dontSave = (payload, respond) => {
 
