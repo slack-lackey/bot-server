@@ -27,7 +27,7 @@ describe('file-created.js', () => {
   it('should not run without inputs', ()=> {
     expect(fileCreated()).toBeNull();
   });
-  xit('should log on success', ()=> {
+  it('should log on success', ()=> {
     const spy = jest.spyOn(console, 'log');
     fileCreated(fileEvent, body);
     expect(spy).toBeCalled();
