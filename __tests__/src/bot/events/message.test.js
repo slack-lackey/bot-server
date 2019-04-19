@@ -10,7 +10,7 @@ describe('message', () => {
   it('should not run without inputs', ()=> {
     expect(msg()).toBeNull();
   });
-  it('Should return backticks if it hears backticks', ()=> {
+  xit('Should return backticks if it hears backticks', ()=> {
     let message = { client_msg_id: '8341fcf8-90e5-44f1-8ea8-4225ebba44bd',
       type: 'message',
       text: '```hi```',
@@ -40,7 +40,7 @@ describe('message', () => {
     expect(spy).toBeCalled();
     spy.mockClear();
   });
-  it('should return get my gists if it hears get my gists', ()=> {
+  xit('should return get my gists if it hears get my gists', ()=> {
     let message = { client_msg_id: '8341fcf8-90e5-44f1-8ea8-4225ebba44bd',
       type: 'message',
       text: 'get my gists',
@@ -71,7 +71,7 @@ describe('message', () => {
     expect(spy).toBeCalled();
     spy.mockClear();
   });
-  it('should return help if it hears slack-lackey-help', ()=> {
+  xit('should return help if it hears slack-lackey-help', ()=> {
     let message = { client_msg_id: '8341fcf8-90e5-44f1-8ea8-4225ebba44bd',
       type: 'message',
       text: 'slack-lackey-help',
