@@ -10,6 +10,7 @@ const randomGif = require('../../lib/random-gif.js');
 const blockSuccess = require('../../blocks/success.json');
 
 module.exports = (payload, respond) => {
+  if(!payload || !respond){return null;}
   let file_id = payload.actions[0].value;
 
   let teamId = payload.user.team_id;
