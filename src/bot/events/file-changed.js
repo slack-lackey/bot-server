@@ -6,7 +6,7 @@ const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (fileEvent, body) => {
   if(!fileEvent || !body){return null;}
-  console.log('file changed');
+  console.log('file changed successfully');
 
   let teamId = body.team_id;
   const slack = getClientByTeamId(teamId); // get correct web client
