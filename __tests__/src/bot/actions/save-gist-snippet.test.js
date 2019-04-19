@@ -41,12 +41,12 @@ const respond = (obj) => {
 };
 
 describe('help.js', ()=> {
+  const spy = jest.spyOn(console, 'log');
   it('Should log success on success', () => {
-    global.console = {log: jest.fn()};
     saveGistSnippet(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
-
   it('Should return null with no inputs', ()=> {
     expect(saveGistSnippet()).toBeNull();
   });

@@ -28,8 +28,9 @@ describe('file-created.js', () => {
     expect(fileCreated()).toBeNull();
   });
   it('should log on success', ()=> {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     fileCreated(fileEvent, body);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

@@ -20,8 +20,9 @@ describe('family.js', () => {
   });
   
   it('returns a response if called properly', () => {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     family(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

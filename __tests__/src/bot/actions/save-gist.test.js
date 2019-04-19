@@ -45,8 +45,9 @@ describe('help.js', ()=> {
     expect(saveGist()).toBeNull();
   }),
   it('Should log success on success', () => {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     saveGist(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

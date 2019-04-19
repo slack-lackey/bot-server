@@ -43,8 +43,9 @@ describe('share-gist.js', ()=> {
     expect(shareGist()).toBeNull();
   });
   it('Should log on success', () => {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     shareGist(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

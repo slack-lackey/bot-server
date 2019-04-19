@@ -30,24 +30,25 @@ let body = { token: 'T294VsZsBYPKm2QOOYYtwMqA',
   authed_users: [ 'UHZ3J65K9' ] };
 
 describe('message', () => {
+  const spy = jest.spyOn(console, 'log');
   it('should not run without inputs', ()=> {
     expect(message()).toBeNull();
   });
   it('Should return backticks if it hears backticks', ()=> {
-    global.console = {log: jest.fn()};
     message(msg, body);
-    expect(console.log).toBeCalledWith('backticks');
+    expect(spy).toBeCalledWith('backticks');
+    spy.mockClear();
   });
   it('should return get my gists if it hears get my gists', ()=> {
-    global.console = {log: jest.fn()};
     msg.text = 'get my gists';
     message(msg, body);
-    expect(console.log).toBeCalledWith('get my gists');
+    expect(spy).toBeCalledWith('get my gists');
+    spy.mockClear();
   });
   it('should return help if it hears slack-lackey-help', ()=> {
-    global.console = {log: jest.fn()};
     msg.text = 'slack-lackey-help';
     message(msg, body);
-    expect(console.log).toBeCalledWith('help');
+    expect(spy).toBeCalledWith('help');
+    spy.mockClear();
   });
 });

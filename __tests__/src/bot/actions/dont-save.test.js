@@ -20,8 +20,9 @@ describe('dont-save', () => {
     expect(dontsave()).toBeNull();
   });
   it('Should return a response', () => {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     dontsave(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

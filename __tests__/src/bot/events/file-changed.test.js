@@ -29,8 +29,9 @@ describe('file-changed.js', () => {
     expect(fileChanged()).toBeNull();
   });
   it('should log on success', ()=> {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     fileChanged(fileEvent, body);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

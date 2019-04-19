@@ -18,8 +18,9 @@ describe('help.js', ()=> {
     expect(help()).toBeNull();
   });
   it('Should return a response if given a payload and respond', ()=> {
-    global.console = {log: jest.fn()};
+    const spy = jest.spyOn(console, 'log');
     help(payload, respond);
-    expect(console.log).toBeCalled();
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });
