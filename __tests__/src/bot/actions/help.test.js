@@ -3,18 +3,23 @@
 const rootDir = process.cwd();
 let help = require(`${rootDir}/src/bot/actions/help.js`);
 
+const payload = {hi: 'hello'};
+
+const respond = (obj) => {
+  if (typeof obj === 'object') {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 describe('help.js', ()=> {
   it('Should return null with no inputs', ()=> {
     expect(help()).toBeNull();
   });
   it('Should return a response if given a payload and respond', ()=> {
-    let res = { text: 'Processing...'};
-    function respond(){
-      return {
-        blocks: 'hi',
-        replace_original: true,
-      };
-    }
-    expect(help('1', respond())).toEqual(res);
+    global.console = {log: jest.fn()};
+    help(payload, respond);
+    expect(console.log).toBeCalled();
   });
 });

@@ -20,6 +20,8 @@ describe('dont-save', () => {
     expect(dontsave()).toBeNull();
   });
   it('Should return a response', () => {
-    expect(dontsave(payload, respond)).toEqual(true);
+    global.console = {log: jest.fn()};
+    dontsave(payload, respond);
+    expect(console.log).toBeCalled();
   });
 });

@@ -5,12 +5,17 @@ const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (fileEvent, body) => {
-  console.log('file was edited');
+  if(!fileEvent || !body){return null;}
+
+  // console.log('FILE EVENT______', fileEvent);
+  // console.log('BODY__________', body);
+
 
   let teamId = body.team_id;
   const slack = getClientByTeamId(teamId); // get correct web client
   const token = getToken(teamId); // get token from local storage
 
+  console.log('success');
   return slack.files.info({ 'token': token, 'file': fileEvent.file_id })
     .then(file => {
 
