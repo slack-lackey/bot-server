@@ -5,10 +5,10 @@ const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (payload, respond) => {
   if(!payload || !respond){return null;}
+  console.log('Gist shared.');
   let teamId = payload.user.team_id;
   const slack = getClientByTeamId(teamId); // get correct web client
   const token = getToken(teamId); // get token from local storage
-  console.log('Gist shared.');
   slack.chat.postMessage({
     token: token,
     channel: payload.channel.id,
