@@ -34,5 +34,4 @@ let pickGif = (array = gifArray) => {
   return selectedGif;
 };
 
-// pickGif(gifArray);
 module.exports = pickGif;

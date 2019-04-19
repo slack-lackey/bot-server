@@ -8,6 +8,7 @@ class MongoModel {
     return this.schema.find(_id);
   }
   post(record){
+    if(!record){return null;}
     let newRecord = new this.schema(record);
     return newRecord.save();
   }

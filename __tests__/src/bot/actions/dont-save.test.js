@@ -20,6 +20,9 @@ describe('dont-save', () => {
     expect(dontsave()).toBeNull();
   });
   it('Should return a response', () => {
-    expect(dontsave(payload, respond)).toEqual(true);
+    const spy = jest.spyOn(console, 'log');
+    dontsave(payload, respond);
+    expect(spy).toBeCalled();
+    spy.mockClear();
   });
 });

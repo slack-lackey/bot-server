@@ -1,4 +1,6 @@
 'use strict';
+const rootDir = process.cwd();
+let saveGistSnippet = require(`${rootDir}/src/bot/actions/save-gist-snippet.js`);
 
 let payload = { type: 'block_actions',
   team: { id: 'THF13BXTL', domain: 'slacklackey' },
@@ -27,17 +29,40 @@ let payload = { type: 'block_actions',
    value: 'FHUMLG7QR',
    type: 'button',
    style: 'primary',
-   action_ts: '1555627084.623529' } ] }
+   action_ts: '1555627084.623529' } ] };
 
-const rootDir = process.cwd();
-let saveGistSnippet = require(`${rootDir}/src/bot/actions/save-gist-snippet.js`);
+
+const respond = (obj) => {
+  if (typeof obj === 'object') {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 describe('help.js', ()=> {
+  const spy = jest.spyOn(console, 'log');
+  it('Should log success on success', () => {
+    saveGistSnippet(payload, respond);
+    expect(spy).toBeCalled();
+    spy.mockClear();
+  });
   it('Should return null with no inputs', ()=> {
     expect(saveGistSnippet()).toBeNull();
   });
   it('Should return null if payload.actions[0].value is null', () => {
-    
+    payload.actions[0].value = null;
+    expect(saveGistSnippet(payload)).toBeNull();
   });
-
+  it('Should return null if payload.user.team_id is null', () => {
+    payload.actions[0].value = 'FHUMLG7QR';
+    payload.user.team_id = null;
+    expect(saveGistSnippet(payload)).toBeNull();
+  });
+  it('Should return null if payload.channel.id is null', () => {
+    payload.user.team_id = 'UHL424Y9F';
+    payload.channel.id = null;
+    expect(saveGistSnippet(payload)).toBeNull();
+  });
+  
 });

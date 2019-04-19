@@ -5,7 +5,9 @@ const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (fileEvent, body) => {
-  console.log('file was edited');
+  if(!fileEvent || !body){return null;}
+
+  console.log('file created successfully');
 
   let teamId = body.team_id;
   const slack = getClientByTeamId(teamId); // get correct web client

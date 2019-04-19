@@ -9,9 +9,10 @@ const getClientByTeamId = require('../../lib/web-api-helpers').getClientByTeamId
 const getToken = require('../../lib/web-api-helpers.js').getToken;
 
 module.exports = (message, body) => {
+  if(!message || !body){return null;}
   // ***** If message contains 3 backticks, asks if user wants to save a Gist with buttons
   if (!message.subtype && message.text.indexOf('```') >= 0) {
-
+    console.log('backticks');
     let teamId = body.team_id;
     const slack = getClientByTeamId(teamId); // get correct web client
     const token = getToken(teamId); // get token from local storage
@@ -40,7 +41,7 @@ module.exports = (message, body) => {
 
   // ***** If message contains "get my gists", send back a link from the GitHub API
   if (!message.subtype && message.text.indexOf('get my gists') >= 0) {
-
+    console.log('get my gists');
     let teamId = body.team_id;
     const slack = getClientByTeamId(teamId); // get correct web client
     const token = getToken(teamId); // get token from local storage
@@ -72,7 +73,7 @@ module.exports = (message, body) => {
 
   // ***** If message contains "<bot_id> help", send back a the "help" block contents
   if (!message.subtype && message.text.indexOf('slack-lackey-help') >= 0) {
-
+    console.log('help');
     let teamId = body.team_id;
     const slack = getClientByTeamId(teamId); // get correct web client
     const token = getToken(teamId); // get token from local storage

@@ -8,6 +8,7 @@ const blockSuccess = require('../../blocks/success.json');
 
 
 module.exports = (payload, respond) => {
+  if(!payload || !respond){return null;}
 
   // Get the original message object (with the future Gist's content)
   const message = JSON.parse(payload.actions[0].value);
